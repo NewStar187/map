@@ -1,0 +1,5 @@
+{
+  "supabaseUrl": "https://<프로젝트 주소>.supabase.co",
+  "supabaseAnonKey": "<공개용 anon 키. 비밀 키(service_role)와 AI 키는 절대 여기에 넣지 않는다>",
+  "assistUrl": "https://<프로젝트 주소>.supabase.co/functions/v1/assistant"
+}

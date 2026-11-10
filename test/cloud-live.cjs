@@ -1,0 +1,34 @@
+// 실제 Supabase 프로젝트에 로그인 없이 붙여 보는 검사(읽기와 막힘만 본다. 계정은 만들지 않는다)
+const { chromium } = require('playwright'); const path = require('path');
+(async () => {
+  const b = await chromium.launch(), p = await (await b.newContext({ viewport: { width: 1440, height: 900 } })).newPage(); p.setDefaultTimeout(8000);
+  const errs = []; p.on('pageerror', (e) => errs.push(e.message)); p.on('console', (m) => { if (/\[MAP\]/.test(m.text())) errs.push('console: ' + m.text()); });
+  p.on('response', (res) => { if (res.status() >= 400 && !/rpc\/unlock|notices/.test(res.url())) errs.push('HTTP ' + res.status() + ' ' + res.url().slice(0, 120)); });
+  let fail = 0; const ok = (c, m) => { console.log((c ? 'ok  ' : 'FAIL') + ' ' + m); if (!c) fail++; };
+  await p.goto('file://' + path.resolve(__dirname, '../dist/index.cloud.test.html')); await p.waitForTimeout(3000);
+  ok(await p.evaluate(() => !!window.supabase), 'Supabase 라이브러리를 불러옴');
+  ok(await p.$('.acct') !== null, '사이드바에 로그인 상자가 보임: ' + (await p.$eval('.acct', (e) => e.innerText.replace(/\s+/g, ' ')).catch(() => '-')));
+  const r = await p.evaluate(async () => { const c = window.supabase.createClient(window.MAP_CONFIG.supabaseUrl, window.MAP_CONFIG.supabaseAnonKey);
+    const t = await c.from('tools').select('id'); const st = await c.from('tool_cat_stats').select('*');
+    const g = await c.from('games').select('id'); const tok = await c.rpc('unlock', { p_kind: 'work', p_target: '00000000-0000-0000-0000-000000000000' });
+    const ins = await c.from('notices').insert({ tool_id: 'suno', title: 'x', body: 'y' }); const det = await c.from('work_details').select('*');
+    return { tools: t.data && t.data.length, toolsErr: t.error && t.error.message, stats: st.error ? st.error.message : 'ok', games: g.data ? g.data.length : g.error.message, unlockErr: tok.error && tok.error.message, insErr: ins.error && ins.error.message, details: det.data ? det.data.length : det.error.message }; });
+  ok(r.tools === 15, '도구 15개를 읽음 (' + r.tools + (r.toolsErr || '') + ')');
+  ok(r.stats === 'ok', '에셋별 별점 집계를 누구나 읽을 수 있음 (' + r.stats + ')');
+  ok(r.games === 0, '로그인 안 하면 남의 게임이 하나도 안 보임 (' + r.games + ')');
+  ok(/LOGIN_REQUIRED|permission/i.test(r.unlockErr || ''), '로그인 안 하면 토큰으로 열 수 없음 (' + r.unlockErr + ')');
+  ok(!!r.insErr, '로그인 안 하면 소식을 등록할 수 없음 (' + (r.insErr || '들어가 버림!') + ')');
+  ok(r.details === 0, '잠긴 내용(프롬프트 등)이 안 보임 (' + r.details + ')');
+  await p.click('.acct [data-act=auth-open]'); await p.waitForTimeout(300);
+  ok(await p.$('#auF') !== null, '로그인 창이 열림'); await p.click('[data-aumode=up]'); ok(await p.$('#auNick') !== null, '가입 탭에 닉네임 칸이 있음');
+  await p.fill('#auEmail', 'not-an-email'); await p.click('#auF button[type=submit]'); await p.waitForTimeout(200);
+  ok((await p.innerText('#auErr')).includes('이메일'), '잘못된 이메일을 막음'); await p.keyboard.press('Escape');
+  await p.evaluate(() => __t.go('tools')); await p.click('[data-toolpage=pixellab]'); await p.click('.wcard'); await p.waitForTimeout(300);
+  ok(await p.$('.modal.work .lockbox') === null, '예시 결과물은 로그인 없이 열림'); await p.keyboard.press('Escape');
+  await p.click('[data-act=upload]').catch(() => p.click('[data-uploadfor]')); await p.waitForTimeout(300);
+  ok(await p.$('#auF') !== null, '로그인 없이 결과물 올리기를 누르면 로그인 창이 뜸'); await p.keyboard.press('Escape');
+  await p.evaluate(() => __t.go('setup')); await p.click('[data-act=make]'); await p.waitForTimeout(1600);
+  ok((await p.$$eval('.cm-h', (x) => x.length)) >= 2, '서버 가격으로 견적이 나옴: ' + (await p.$$eval('.cm-h .cm-money', (x) => x.map((e) => e.innerText).join(' / '))));
+  ok(errs.length === 0, '화면 오류 없음 ' + errs.join(' | '));
+  await b.close(); console.log(fail ? fail + '개 실패' : '모두 통과'); process.exit(fail ? 1 : 0);
+})();

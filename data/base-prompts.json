@@ -1,0 +1,85 @@
+{
+ "rule": "모든 도구에 프롬프트를 글자 하나 바꾸지 않고 넣는다. 다시 뽑기는 하지 않고 처음 나온 결과를 쓴다(도구가 한 번에 여러 장을 주면 왼쪽부터). 손으로 고치지 않는다. 뽑은 날짜와 요금제를 함께 적는다.",
+ "prompts": [
+  {
+   "cat": "obj",
+   "name": "캐릭터·사물",
+   "prompt": "32x32 pixel art knight, idle pose, side view, transparent background",
+   "shots": [
+    "대기",
+    "걷기",
+    "공격"
+   ],
+   "note": "같은 캐릭터로 세 자세를 뽑는다. 도구가 애니메이션을 지원하면 그 기능으로, 아니면 자세만 바꿔 다시 뽑는다."
+  },
+  {
+   "cat": "scene",
+   "name": "배경·맵",
+   "prompt": "16x16 pixel art forest tileset, grass, dirt, trees",
+   "shots": [
+    "숲",
+    "동굴",
+    "마을"
+   ],
+   "note": "forest 자리를 cave, village로 바꿔 세 장."
+  },
+  {
+   "cat": "ui",
+   "name": "UI·아이콘",
+   "prompt": "pixel art game UI kit, health bar, inventory slots, buttons",
+   "shots": [
+    "체력바",
+    "버튼",
+    "가방"
+   ],
+   "note": "한 번에 안 나오면 요소별로 나눠 뽑는다."
+  },
+  {
+   "cat": "illus",
+   "name": "일러스트",
+   "prompt": "key art of a small knight facing a giant dragon, dramatic light",
+   "shots": [
+    "표지",
+    "컷신",
+    "카드"
+   ],
+   "note": "표지는 가로, 카드는 세로 비율로."
+  },
+  {
+   "cat": "sfx",
+   "name": "효과음",
+   "prompt": "short 8-bit sword slash sound, 0.3 seconds",
+   "shots": [
+    "베기"
+   ],
+   "note": "wav 또는 mp3 한 개."
+  },
+  {
+   "cat": "bgm",
+   "name": "배경음악",
+   "prompt": "calm 8-bit forest exploration loop, 90 seconds",
+   "shots": [
+    "숲 탐험"
+   ],
+   "note": "앞 20초만 잘라 올린다."
+  },
+  {
+   "cat": "text",
+   "name": "글·대사",
+   "prompt": "NPC 상인의 첫 인사 대사 3줄, 친근한 말투",
+   "shots": [
+    "대사"
+   ],
+   "note": "글 그대로 저장."
+  },
+  {
+   "cat": "code",
+   "name": "코드",
+   "prompt": "2D 플랫포머 점프와 충돌 처리",
+   "shots": [
+    "코드"
+   ],
+   "note": "예시 그림 없음. 별점만 쓴다."
+  }
+ ]
+}

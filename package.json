@@ -1,0 +1,14 @@
+{
+  "name": "map-my-asset-preset",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:ui": "node build.mjs && node test/ui-smoke.cjs 1440 900 d && node test/ui-smoke.cjs 390 844 m && node test/ai-assist.cjs && node test/cloud-flow.cjs",
+    "test:live": "node build.mjs && node test/cloud-live.cjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.16"
+  }
+}

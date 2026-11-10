@@ -1,0 +1,756 @@
+{
+ "note": "MAP 도구 기준 데이터. 2026-11-10에 공식 페이지를 요약해 읽은 1차 조사 결과다. todo 항목은 사람이 원문을 보고 확정해야 한다.",
+ "tools": [
+  {
+   "id": "pixellab",
+   "name": "PixelLab",
+   "ai": true,
+   "billing": "구독",
+   "color": "#cba6f7",
+   "cats": [
+    "obj",
+    "scene",
+    "ui"
+   ],
+   "site_url": "https://www.pixellab.ai",
+   "pricing_url": "https://www.pixellab.ai/pricing",
+   "terms_url": "https://www.pixellab.ai/termsofservice",
+   "terms_note": "약관이 요금제를 나누지 않고 상업적 이용을 허락하고, 저작권도 사용자에게 있다고 적는다. 결과물로 다른 AI를 학습시키는 것은 서면 허락 없이는 금지.",
+   "terms_date": "2026-10-30",
+   "confidence": "약관 확인, 가격은 외부 자료",
+   "todo": [
+    "공식 가격 페이지가 읽히지 않아 가격은 외부 자료 두 곳 기준이다. 로그인해서 실제 가격과 연간 결제 가격을 확인할 것",
+    "무료 체험 한도 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료 체험",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "외부 자료: 빠른 생성 40회 뒤 하루 5회",
+     "default": false
+    },
+    {
+     "key": "apprentice",
+     "name": "Pixel Apprentice",
+     "usd_month": 12,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": true,
+     "note": "월 2,000회 생성",
+     "default": true
+    },
+    {
+     "key": "artisan",
+     "name": "Pixel Artisan",
+     "usd_month": 24,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": true,
+     "note": "월 5,000회 생성",
+     "default": false
+    },
+    {
+     "key": "architect",
+     "name": "Pixel Architect",
+     "usd_month": 50,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": true,
+     "note": "월 10,000회 생성",
+     "default": false
+    }
+   ],
+   "self_made": false,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "retro",
+   "name": "Retro Diffusion",
+   "ai": true,
+   "billing": "한 번 구매 또는 쓴 만큼",
+   "color": "#f5c2e7",
+   "cats": [
+    "obj",
+    "scene",
+    "ui"
+   ],
+   "site_url": "https://www.retrodiffusion.ai",
+   "pricing_url": "https://astropulse.itch.io/retrodiffusion",
+   "terms_url": "https://www.retrodiffusion.ai",
+   "terms_note": "웹 버전 FAQ는 결과물이 사용자 소유이고 상업 프로젝트에 쓸 수 있다고 적는다. Aseprite 확장도 결과물은 만든 사람 소유라고 개발자가 답했다(확장의 코드와 모델 자체는 상업 이용 불가).",
+   "terms_date": null,
+   "confidence": "웹 가격·FAQ 확인, 확장의 권리는 개발자 댓글",
+   "todo": [
+    "확장 안에 든 라이선스 파일을 직접 읽을 것",
+    "이용약관 본문과 날짜 확인"
+   ],
+   "plans": [
+    {
+     "key": "full",
+     "name": "Aseprite 확장",
+     "usd_month": 0,
+     "usd_once": 65,
+     "rights": "ok",
+     "estimated": false,
+     "note": "내 PC에서 실행. 그래픽카드 메모리 4GB부터라고 개발자가 답함",
+     "default": true
+    },
+    {
+     "key": "lite",
+     "name": "Aseprite 확장 Lite",
+     "usd_month": 0,
+     "usd_once": 20,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": false
+    },
+    {
+     "key": "web",
+     "name": "웹(쓴 만큼)",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "이미지 한 장 $0.03~$0.18, 가입 시 $0.50 제공, 충전은 $5부터",
+     "default": false
+    }
+   ],
+   "self_made": false,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "zimage",
+   "name": "Z-Image",
+   "ai": true,
+   "billing": "무료 · 내 PC에서 실행",
+   "color": "#f9e2af",
+   "cats": [
+    "illus",
+    "ui",
+    "scene"
+   ],
+   "site_url": "https://github.com/Tongyi-MAI/Z-Image",
+   "pricing_url": "https://github.com/Tongyi-MAI/Z-Image",
+   "terms_url": "https://github.com/Tongyi-MAI/Z-Image/blob/main/LICENSE",
+   "terms_note": "Apache-2.0 라이선스. 상업적 이용이 가능하고 결과물에 대한 권리 주장도 없다.",
+   "terms_date": null,
+   "confidence": "확인",
+   "todo": [
+    "공식 안내는 Turbo 모델이 그래픽카드 메모리 16GB에서 무리 없이 돈다는 것뿐이다. 8GB에서 도는지는 직접 확인할 것(시안은 8GB 이상으로 안내 중)"
+   ],
+   "plans": [
+    {
+     "key": "local",
+     "name": "내 PC에서 실행",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "Z-Image-Turbo 기준",
+     "default": true
+    }
+   ],
+   "self_made": false,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "unityai",
+   "name": "Unity AI",
+   "ai": true,
+   "billing": "구독 + 크레딧",
+   "color": "#cdd6f4",
+   "cats": [
+    "obj",
+    "sfx",
+    "scene"
+   ],
+   "site_url": "https://unity.com/resources/what-is-unity-ai",
+   "pricing_url": "https://unity.com/products/compare-plans",
+   "terms_url": "https://unity.com/legal/third-party-ai-terms",
+   "terms_note": "Unity는 AI로 만든 콘텐츠가 든 게임을 상업적으로 팔 수 있다고 안내하되, 책임은 개발자에게 있다고 적는다. 생성기는 외부 모델(Layer AI, Scenario, Uthana)로 돌아가며 그쪽 약관도 적용된다.",
+   "terms_date": "2026-07-28",
+   "confidence": "가격·상업 이용 확인, 소유권 문구는 미확인",
+   "todo": [
+    "결과물 소유권 문구 확인(Unity AI 약관 페이지가 열리지 않았음)",
+    "생성 한 번에 드는 크레딧 수 공식 표 확인",
+    "14일 체험 뒤 자동으로 월 $10 구독으로 바뀐다는 점을 화면에 안내할지 결정"
+   ],
+   "plans": [
+    {
+     "key": "personal",
+     "name": "Personal",
+     "usd_month": 10,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 1,000크레딧, 이월 안 됨. 14일 체험(카드 필요) 뒤 자동 전환",
+     "default": true
+    }
+   ],
+   "self_made": false,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "midjourney",
+   "name": "Midjourney",
+   "ai": true,
+   "billing": "구독",
+   "color": "#b4befe",
+   "cats": [
+    "illus",
+    "scene"
+   ],
+   "site_url": "https://www.midjourney.com",
+   "pricing_url": "https://docs.midjourney.com/docs/plans",
+   "terms_url": "https://docs.midjourney.com/docs/terms-of-service",
+   "terms_note": "유료 요금제로 만든 이미지는 사용자 소유이고 해지 뒤에도 유지된다. 연 매출 100만 달러가 넘는 회사는 Pro 이상이어야 한다. 기본으로 만든 이미지가 공개되며, 비공개(Stealth)는 Pro 이상만.",
+   "terms_date": "2026-05-27",
+   "confidence": "확인",
+   "todo": [
+    "무료 체험이 지금 있는지 확인"
+   ],
+   "plans": [
+    {
+     "key": "basic",
+     "name": "Basic",
+     "usd_month": 10,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "연간 결제 시 월 $8. 만든 그림이 공개됨",
+     "default": true
+    },
+    {
+     "key": "standard",
+     "name": "Standard",
+     "usd_month": 30,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "연간 결제 시 월 $24",
+     "default": false
+    },
+    {
+     "key": "pro",
+     "name": "Pro",
+     "usd_month": 60,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "연간 결제 시 월 $48. 비공개 가능",
+     "default": false
+    },
+    {
+     "key": "mega",
+     "name": "Mega",
+     "usd_month": 120,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "연간 결제 시 월 $96",
+     "default": false
+    }
+   ],
+   "self_made": false,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "meshy",
+   "name": "Meshy",
+   "ai": true,
+   "billing": "구독",
+   "color": "#94e2d5",
+   "cats": [
+    "obj"
+   ],
+   "site_url": "https://www.meshy.ai",
+   "pricing_url": "https://www.meshy.ai/pricing",
+   "terms_url": "https://www.meshy.ai/terms-of-use",
+   "terms_note": "무료 플랜 결과물은 Meshy 소유이고 CC BY 4.0(출처 표시)으로 쓸 수 있다. 유료 플랜은 결과물이 사용자 소유. 커뮤니티에 공개한 결과물은 CC0가 된다.",
+   "terms_date": "2026-09-19",
+   "confidence": "확인(연간 가격 제외)",
+   "todo": [
+    "연간 결제 가격이 페이지 안에서 서로 어긋난다. 실제 가격 확인",
+    "유료 플랜을 해지한 뒤 결과물 권리가 어떻게 되는지 약관에 없다. 문의하거나 안내 문구에 밝힐 것"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "attr",
+     "estimated": false,
+     "note": "월 100크레딧, 내려받기 10회",
+     "default": false
+    },
+    {
+     "key": "pro",
+     "name": "Pro",
+     "usd_month": 20,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 1,000크레딧",
+     "default": true
+    },
+    {
+     "key": "premium",
+     "name": "Premium",
+     "usd_month": 40,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 3,000크레딧",
+     "default": false
+    },
+    {
+     "key": "ultra",
+     "name": "Ultra",
+     "usd_month": 100,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 8,000크레딧",
+     "default": false
+    }
+   ],
+   "self_made": false,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "eleven",
+   "name": "ElevenLabs",
+   "ai": true,
+   "billing": "구독",
+   "color": "#fab387",
+   "cats": [
+    "sfx"
+   ],
+   "site_url": "https://elevenlabs.io",
+   "pricing_url": "https://elevenlabs.io/pricing",
+   "terms_url": "https://elevenlabs.io/terms-of-use",
+   "terms_note": "무료 플랜은 상업적 이용 불가. 유료 구독 중에 만든 소리는 구독이 끝난 뒤에도 상업적으로 쓸 수 있고, 구독 전이나 후에 만든 것은 안 된다.",
+   "terms_date": "2026-10-09",
+   "confidence": "확인",
+   "todo": [
+    "효과음 하나에 드는 크레딧 수 확인",
+    "연간 결제 가격 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "none",
+     "estimated": false,
+     "note": "월 1만 크레딧",
+     "default": false
+    },
+    {
+     "key": "starter",
+     "name": "Starter",
+     "usd_month": 6,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 3만 크레딧. 첫 달 $1",
+     "default": true
+    },
+    {
+     "key": "creator",
+     "name": "Creator",
+     "usd_month": 22,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 12.1만 크레딧",
+     "default": false
+    },
+    {
+     "key": "pro",
+     "name": "Pro",
+     "usd_month": 99,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 60만 크레딧",
+     "default": false
+    }
+   ],
+   "self_made": false,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "suno",
+   "name": "Suno",
+   "ai": true,
+   "billing": "구독",
+   "color": "#f2cdcd",
+   "cats": [
+    "bgm"
+   ],
+   "site_url": "https://suno.com",
+   "pricing_url": "https://suno.com/pricing",
+   "terms_url": "https://suno.com/terms",
+   "terms_note": "무료 플랜은 상업적 이용 불가. Pro·Premier 구독 중에 만든 곡은 상업적으로 쓸 수 있고 해지 뒤에도 유지된다. 내려받은 결과물만 해당하며 내려받기 한도가 요금제마다 다르다. 리믹스는 모든 요금제에서 비상업.",
+   "terms_date": "2026-09-03",
+   "confidence": "확인(월 결제 가격은 추정)",
+   "todo": [
+    "가격 페이지가 $8(연간)과 $10을 함께 보여 준다. $10·$30이 월 결제 가격이 맞는지 확인",
+    "요금제별 내려받기 한도 숫자 확인(시안은 Pro 20곡, Premier 60곡으로 적고 있음)"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "none",
+     "estimated": false,
+     "note": "하루 50크레딧",
+     "default": false
+    },
+    {
+     "key": "pro",
+     "name": "Pro",
+     "usd_month": 10,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": true,
+     "note": "월 2,500크레딧. 연간 결제 시 월 $8",
+     "default": true
+    },
+    {
+     "key": "premier",
+     "name": "Premier",
+     "usd_month": 30,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": true,
+     "note": "월 10,000크레딧. 연간 결제 시 월 $24",
+     "default": false
+    }
+   ],
+   "self_made": false,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "claude",
+   "name": "Claude",
+   "ai": true,
+   "billing": "구독",
+   "color": "#fab387",
+   "cats": [
+    "code",
+    "text"
+   ],
+   "site_url": "https://claude.com",
+   "pricing_url": "https://claude.com/pricing",
+   "terms_url": "https://www.anthropic.com/legal/consumer-terms",
+   "terms_note": "소비자 약관은 결과물에 대한 권리를 사용자에게 넘긴다고 적는다(모든 요금제 공통). 서비스로 다른 AI 모델을 학습시키거나 경쟁 제품을 만드는 것은 금지.",
+   "terms_date": "2025-10-08",
+   "confidence": "가격 확인, 상업 이용 문구는 사람이 다시 읽을 것",
+   "todo": [
+    "결과물의 상업적 이용을 명시적으로 허락하는 문장이 있는지 약관 원문에서 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": false
+    },
+    {
+     "key": "pro",
+     "name": "Pro",
+     "usd_month": 20,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "연간 결제 시 월 $17",
+     "default": true
+    },
+    {
+     "key": "max",
+     "name": "Max",
+     "usd_month": 100,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "Pro의 5배 사용량",
+     "default": false
+    },
+    {
+     "key": "ultra",
+     "name": "Ultra",
+     "usd_month": 200,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "예전 Max 20x",
+     "default": false
+    }
+   ],
+   "self_made": false,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "copilot",
+   "name": "GitHub Copilot",
+   "ai": true,
+   "billing": "구독",
+   "color": "#b4befe",
+   "cats": [
+    "code"
+   ],
+   "site_url": "https://github.com/features/copilot",
+   "pricing_url": "https://github.com/features/copilot/plans",
+   "terms_url": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
+   "terms_note": "GitHub는 입력과 결과물의 소유권을 주장하지 않는다. 결과물에 제3자 라이선스가 필요한지는 사용자가 판단해야 한다.",
+   "terms_date": "2026-04-27",
+   "confidence": "확인",
+   "todo": [
+    "무료 플랜의 크레딧 양 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "Free",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 자동 완성 2,000회",
+     "default": false
+    },
+    {
+     "key": "pro",
+     "name": "Pro",
+     "usd_month": 10,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 1,500 AI 크레딧",
+     "default": true
+    },
+    {
+     "key": "proplus",
+     "name": "Pro+",
+     "usd_month": 39,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 7,000 AI 크레딧",
+     "default": false
+    },
+    {
+     "key": "max",
+     "name": "Max",
+     "usd_month": 100,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 20,000 AI 크레딧",
+     "default": false
+    }
+   ],
+   "self_made": false,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "aseprite",
+   "name": "Aseprite",
+   "ai": false,
+   "self_made": true,
+   "billing": "한 번 구매",
+   "color": "#cdd6f4",
+   "cats": [
+    "obj",
+    "scene",
+    "ui",
+    "illus"
+   ],
+   "site_url": "https://www.aseprite.org",
+   "pricing_url": "https://www.aseprite.org/buy/",
+   "terms_url": "https://www.aseprite.org/faq/",
+   "terms_note": "직접 그린 그림은 개인·상업 제품 어디에나 쓸 수 있다.",
+   "terms_date": null,
+   "confidence": "FAQ 확인",
+   "todo": [
+    "결제 화면과 스팀 가격 확인(FAQ의 최소 금액 $19.99만 읽음)"
+   ],
+   "plans": [
+    {
+     "key": "own",
+     "name": "구매",
+     "usd_month": 0,
+     "usd_once": 19.99,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": true
+    }
+   ],
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "jsfxr",
+   "name": "jsfxr",
+   "ai": false,
+   "billing": "무료",
+   "color": "#89b4fa",
+   "cats": [
+    "sfx"
+   ],
+   "site_url": "https://sfxr.me",
+   "pricing_url": "https://sfxr.me",
+   "terms_url": "https://github.com/chr15m/jsfxr/blob/master/UNLICENSE",
+   "terms_note": "도구는 Unlicense(퍼블릭 도메인). 만든 소리는 상업적 이용에 제한이 없다고 안내한다.",
+   "terms_date": null,
+   "confidence": "도구 라이선스 확인, 소리에 대한 안내는 사이트 표 한 줄",
+   "todo": [
+    "sfxr.me의 Pro 버전이 무엇인지 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": true
+    }
+   ],
+   "self_made": false,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "kenney",
+   "name": "Kenney",
+   "ai": false,
+   "billing": "무료 에셋",
+   "color": "#a6e3a1",
+   "cats": [
+    "obj",
+    "scene",
+    "ui",
+    "sfx"
+   ],
+   "site_url": "https://kenney.nl",
+   "pricing_url": "https://kenney.nl/assets",
+   "terms_url": "https://kenney.nl/support",
+   "terms_note": "에셋 페이지의 모든 게임 에셋은 CC0(퍼블릭 도메인). 상업 프로젝트에 쓸 수 있고 출처 표시도 필요 없다. 로고는 쓰면 안 된다.",
+   "terms_date": null,
+   "confidence": "확인",
+   "todo": [
+    "쓰려는 팩마다 들어 있는 라이선스 파일 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": true
+    }
+   ],
+   "self_made": false,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "blender",
+   "name": "Blender",
+   "ai": false,
+   "self_made": true,
+   "billing": "무료",
+   "color": "#fab387",
+   "cats": [
+    "obj",
+    "scene"
+   ],
+   "site_url": "https://www.blender.org",
+   "pricing_url": "https://www.blender.org/download/",
+   "terms_url": "https://www.blender.org/about/license/",
+   "terms_note": "Blender로 만든 것은 만든 사람의 것이다. 상업적 이용 가능, 출처 표시 불필요.",
+   "terms_date": null,
+   "confidence": "확인",
+   "todo": [],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": true
+    }
+   ],
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "quaternius",
+   "name": "Quaternius",
+   "ai": false,
+   "billing": "무료 3D 에셋",
+   "color": "#a6e3a1",
+   "cats": [
+    "obj",
+    "scene"
+   ],
+   "site_url": "https://quaternius.com",
+   "pricing_url": "https://quaternius.com",
+   "terms_url": "https://quaternius.com/faq.html",
+   "terms_note": "모든 모델이 CC0. 상업 프로젝트에 출처 표시 없이 쓸 수 있다.",
+   "terms_date": null,
+   "confidence": "확인",
+   "todo": [],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": true
+    }
+   ],
+   "self_made": false,
+   "checked_on": "2026-11-10"
+  }
+ ],
+ "platform_rules": {
+  "checked_on": "2026-11-10",
+  "steam": {
+   "source": "https://partner.steamgames.com/doc/gettingstarted/contentsurvey",
+   "summary": "개발 중에 AI 서비스를 썼거나 게임이 AI 서비스를 포함하면 콘텐츠 설문에 밝혀야 하고, 내용은 상점 페이지에 공개된다. 미리 만든 콘텐츠와 실행 중에 만드는 콘텐츠를 나눠 묻고, 실행 중 생성은 어떤 안전장치를 두는지도 적어야 한다. 설문은 \"이런 도구로 얻는 효율 향상은 이 항목의 초점이 아니다\"라고 적어, 플레이어가 접하는 콘텐츠(그림·소리·이야기·번역)를 대상으로 본다.",
+   "todo": [
+    "AI가 짠 코드가 고지 대상이 아니라고 공식 문서가 명시하지는 않는다. 시안은 \"그대로 들어간 AI 코드는 밝히는 쪽\"으로 정해 두었으니 이 판단을 유지할지 팀이 결정"
+   ]
+  },
+  "itch": {
+   "source": "https://itch.io/docs/creators/quality-guidelines",
+   "summary": "생성형 AI로 만든 자료가 들어 있으면 프로젝트 편집 화면의 AI 공개 항목에 표시해야 한다. 에셋 제작자는 필수, 게임은 권장. 분야는 그림, 소리, 글·대사, 코드. 전통적인 게임 AI나 절차적 생성은 해당하지 않는다.",
+   "todo": []
+  }
+ }
+}

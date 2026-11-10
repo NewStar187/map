@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MAP 운영 화면</title>
+<style>
+  :root{--bg:#0f1115;--panel:#16191f;--line:#323844;--text:#e8eaf0;--dim:#9098a6;--accent:#a99bff;--red:#ff8089;--green:#63d297}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 system-ui,'Apple SD Gothic Neo','Malgun Gothic',sans-serif}
+  main{max-width:960px;margin:0 auto;padding:24px 16px 80px;display:flex;flex-direction:column;gap:20px}
+  h1{font-size:22px;margin:0} h2{font-size:17px;margin:0 0 10px} p{margin:0;color:var(--dim)}
+  section{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+  label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--dim)}
+  input,select,textarea,button{font:inherit;color:var(--text);background:#1d2129;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+  textarea{min-height:70px} button{cursor:pointer;font-weight:600} button.p{background:var(--accent);color:#0e0b1f;border-color:var(--accent)}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end} .row > label{flex:1;min-width:160px}
+  table{width:100%;border-collapse:collapse;font-size:14px} th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--dim);font-weight:600}
+  .old{color:var(--red)} .ok{color:var(--green)} .tabs{display:flex;gap:6px;flex-wrap:wrap} .tabs button[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
+  #msg{min-height:22px;color:var(--green)} #msg.err{color:var(--red)} [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <h1>MAP 운영 화면</h1>
+  <p id="who">설정을 확인하는 중이에요.</p>
+  <div id="msg" role="status"></div>
+
+  <section id="login" hidden>
+    <h2>운영자 로그인</h2>
+    <p>Supabase 대시보드에서 내 계정의 profiles.is_admin 을 true 로 바꿔 둔 계정만 쓸 수 있어요.</p>
+    <form id="loginF" class="row"><label>이메일<input id="email" type="email" required autocomplete="username"></label><label>비밀번호<input id="pw" type="password" required autocomplete="current-password"></label><button class="p">로그인</button></form>
+  </section>
+
+  <div id="app" hidden>
+    <div class="tabs" role="group" aria-label="할 일"><button data-tab="check" aria-pressed="true">가격·약관 확인</button><button data-tab="notice" aria-pressed="false">변경 소식 등록</button><button data-tab="works" aria-pressed="false">결과물 검토</button><button id="out">로그아웃</button></div>
+
+    <section data-pane="check">
+      <h2>가격·약관 확인</h2>
+      <p>원문을 다시 읽고 바뀐 것이 없으면 ‘오늘 확인함’을 누르세요. 확인한 지 30일이 넘은 도구는 빨간색으로 보여요.</p>
+      <table><thead><tr><th>도구</th><th>요금제</th><th>상업적 이용 요약</th><th>마지막 확인</th><th></th></tr></thead><tbody id="toolRows"></tbody></table>
+    </section>
+
+    <section data-pane="notice" hidden>
+      <h2>변경 소식 등록</h2>
+      <p>등록하면 그 도구를 쓰는 게임의 ‘소식’에 뜨고, 알림을 켠 사용자에게 전달돼요.</p>
+      <form id="noticeF" style="display:flex;flex-direction:column;gap:10px">
+        <div class="row"><label>도구<select id="nTool" required></select></label><label>중요도<select id="nSev"><option value="risk">지금 확인 필요</option><option value="todo">할 일 있음</option><option value="info">참고</option></select></label><label>적용일<input id="nDate" type="date"></label></div>
+        <label>제목<input id="nTitle" required maxlength="60" placeholder="예: Suno 곡은 유료 플랜 중에 내려받은 것만 상업적으로 쓸 수 있어요"></label>
+        <label>무엇이 바뀌었나<textarea id="nBody" required maxlength="400"></textarea></label>
+        <label>사용자가 할 일<input id="nAct" maxlength="120"></label>
+        <label>근거 주소<input id="nSrc" type="url" placeholder="https://"></label>
+        <div class="row"><button class="p">등록</button></div>
+      </form>
+      <table><thead><tr><th>날짜</th><th>도구</th><th>제목</th></tr></thead><tbody id="noticeRows"></tbody></table>
+    </section>
+
+    <section data-pane="works" hidden>
+      <h2>결과물 검토</h2>
+      <p>올라온 결과물은 공개하기 전까지 다른 사람에게 보이지 않고 별점에도 들어가지 않아요.</p>
+      <table><thead><tr><th>올린 날</th><th>도구·종류</th><th>제목</th><th>별점</th><th></th></tr></thead><tbody id="workRows"></tbody></table>
+    </section>
+  </div>
+</main>
+<script>window.MAP_CONFIG = window.MAP_CONFIG || /*__CONFIG__*/{};</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+  'use strict';
+  var $ = function(id){ return document.getElementById(id); }, cfg = window.MAP_CONFIG || {}, sb = null;
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function say(t, err){ var m = $('msg'); m.textContent = t || ''; m.className = err ? 'err' : ''; }
+  function today(){ return new Date().toISOString().slice(0, 10); }
+  function days(d){ return d ? Math.floor((Date.now() - new Date(d).getTime()) / 86400000) : 9999; }
+  if(!cfg.supabaseUrl || !cfg.supabaseAnonKey || !window.supabase){ $('who').textContent = '아직 서버 설정이 없어요. config.json 에 supabaseUrl 과 supabaseAnonKey 를 넣고 다시 빌드해 주세요.'; return; }
+  sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+
+  async function boot(){
+    var s = (await sb.auth.getSession()).data.session;
+    if(!s){ $('who').textContent = '로그인이 필요해요.'; $('login').hidden = false; $('app').hidden = true; return; }
+    var me = await sb.from('profiles').select('nickname,is_admin').eq('id', s.user.id).single();
+    if(me.error || !me.data.is_admin){ $('who').textContent = '이 계정은 운영자가 아니에요.'; $('login').hidden = false; $('app').hidden = true; return; }
+    $('who').textContent = esc(me.data.nickname) + ' 님, 운영자로 들어왔어요.'; $('login').hidden = true; $('app').hidden = false;
+    await Promise.all([loadTools(), loadNotices(), loadWorks()]);
+  }
+  async function loadTools(){
+    var r = await sb.from('tools').select('id,name,terms_note,terms_url,pricing_url,checked_on,tool_plans(name,usd_month,usd_once,rights,price_estimated)').order('checked_on', {ascending:true});
+    if(r.error) return say('도구를 불러오지 못했어요: ' + r.error.message, true);
+    $('nTool').innerHTML = r.data.map(function(t){ return '<option value="' + esc(t.id) + '">' + esc(t.name) + '</option>'; }).join('');
+    $('toolRows').innerHTML = r.data.map(function(t){
+      var old = days(t.checked_on) > 30;
+      return '<tr><td><b>' + esc(t.name) + '</b><br><a href="' + esc(t.pricing_url) + '" target="_blank" rel="noopener">가격</a> · <a href="' + esc(t.terms_url) + '" target="_blank" rel="noopener">약관</a></td>'
+        + '<td>' + (t.tool_plans || []).map(function(p){ return esc(p.name) + ' ' + (p.usd_once > 0 ? '한 번 $' + p.usd_once : p.usd_month > 0 ? '월 $' + p.usd_month : '무료') + (p.price_estimated ? ' (추정)' : ''); }).join('<br>') + '</td>'
+        + '<td>' + esc(t.terms_note) + '</td><td class="' + (old ? 'old' : 'ok') + '">' + esc(t.checked_on || '없음') + '</td>'
+        + '<td><button data-checked="' + esc(t.id) + '">오늘 확인함</button></td></tr>';
+    }).join('');
+  }
+  async function loadNotices(){
+    var r = await sb.from('notices').select('created_at,tool_id,title').order('created_at', {ascending:false}).limit(30);
+    if(!r.error) $('noticeRows').innerHTML = r.data.map(function(n){ return '<tr><td>' + esc(n.created_at.slice(0, 10)) + '</td><td>' + esc(n.tool_id) + '</td><td>' + esc(n.title) + '</td></tr>'; }).join('') || '<tr><td colspan="3">아직 없어요.</td></tr>';
+  }
+  async function loadWorks(){
+    var r = await sb.from('works').select('id,created_at,tool_id,cat,title,star,status').eq('status', 'pending').order('created_at', {ascending:true}).limit(50);
+    if(!r.error) $('workRows').innerHTML = r.data.map(function(w){ return '<tr><td>' + esc(w.created_at.slice(0, 10)) + '</td><td>' + esc(w.tool_id) + ' · ' + esc(w.cat) + '</td><td>' + esc(w.title) + '</td><td>' + esc(w.star) + '</td><td><button class="p" data-show="' + esc(w.id) + '">공개</button> <button data-hide="' + esc(w.id) + '">숨김</button></td></tr>'; }).join('') || '<tr><td colspan="5">검토할 결과물이 없어요.</td></tr>';
+  }
+  $('loginF').addEventListener('submit', async function(e){ e.preventDefault(); say(''); var r = await sb.auth.signInWithPassword({email:$('email').value, password:$('pw').value}); if(r.error) return say('로그인하지 못했어요: ' + r.error.message, true); boot(); });
+  $('out').addEventListener('click', async function(){ await sb.auth.signOut(); boot(); });
+  $('noticeF').addEventListener('submit', async function(e){
+    e.preventDefault();
+    var r = await sb.from('notices').insert({tool_id:$('nTool').value, severity:$('nSev').value, title:$('nTitle').value.trim(), body:$('nBody').value.trim(), action:$('nAct').value.trim() || null, source_url:$('nSrc').value.trim() || null, effective_on:$('nDate').value || null});
+    if(r.error) return say('등록하지 못했어요: ' + r.error.message, true);
+    say('소식을 등록했어요.'); e.target.reset(); loadNotices();
+  });
+  document.addEventListener('click', async function(e){
+    var b = e.target.closest('button'); if(!b) return; var d = b.dataset, r;
+    if(d.tab){ document.querySelectorAll('[data-tab]').forEach(function(x){ x.setAttribute('aria-pressed', x === b); }); document.querySelectorAll('[data-pane]').forEach(function(x){ x.hidden = x.dataset.pane !== d.tab; }); return; }
+    if(d.checked){ r = await sb.from('tools').update({checked_on:today()}).eq('id', d.checked); if(r.error) return say(r.error.message, true); say('확인한 날짜를 오늘로 바꿨어요.'); return loadTools(); }
+    if(d.show || d.hide){ r = await sb.from('works').update({status:d.show ? 'visible' : 'hidden'}).eq('id', d.show || d.hide); if(r.error) return say(r.error.message, true); say(d.show ? '공개했어요.' : '숨겼어요.'); return loadWorks(); }
+  });
+  boot();
+})();
+</script>
+</body>
+</html>
