@@ -29,10 +29,22 @@ function cloudBoot(){
   SB.auth.onAuthStateChange(function(ev, session){ if(ev === 'INITIAL_SESSION') return; onAuth(session); });
 }
 function loadCatalog(){
-  return Promise.all([SB.from('tool_plans').select('tool_id,plan_key,usd_month,usd_once,rights'), SB.from('tool_stats').select('tool_id,star,n')]).then(function(rs){
+  return Promise.all([SB.from('tool_plans').select('*'), SB.from('tool_stats').select('tool_id,star,n'), SB.from('tools').select('*'), SB.from('tool_caps').select('*')]).then(function(rs){
     if(rs[0].error) throw rs[0].error;
-    rs[0].data.forEach(function(p){ var T = TOOLS[p.tool_id]; if(!T || !T.plans || !T.ai) return; /* 직접 만드는 도구(Aseprite 등)는 엔진이 '이미 가진 것'으로 다루므로 가격을 덮어쓰지 않는다 */ var mine = T.plans.filter(function(x){ return x.id === p.plan_key; })[0]; if(!mine) return; mine.usd = +p.usd_month || 0; mine.once = +p.usd_once || 0; mine.rights = p.rights; });
-    Object.keys(TOOLS).forEach(function(t){ var T = TOOLS[t]; if(!T.plans) return; var d = T.plans.filter(function(x){ return x.id === T.def; })[0]; if(!d) return; T.usd = d.usd || 0; T.once = d.once || 0; T.rights = d.rights; });
+    var plans = rs[0].data || [], tools = rs[2].error ? [] : (rs[2].data || []), caps = rs[3].error ? [] : (rs[3].data || []);
+    /* 기본 도구: 가격만 서버 값으로 맞춘다 */
+    plans.forEach(function(p){ var T = TOOLS[p.tool_id]; if(!T || T.ext || !T.plans || !T.ai) return; /* 직접 만드는 도구(Aseprite 등)는 엔진이 '이미 가진 것'으로 다루므로 가격을 덮어쓰지 않는다 */ var mine = T.plans.filter(function(x){ return x.id === p.plan_key; })[0]; if(!mine) return; mine.usd = +p.usd_month || 0; mine.once = +p.usd_once || 0; mine.rights = p.rights; });
+    Object.keys(TOOLS).forEach(function(t){ var T = TOOLS[t]; if(!T.plans || T.ext) return; var d = T.plans.filter(function(x){ return x.id === T.def; })[0]; if(!d) return; T.usd = d.usd || 0; T.once = d.once || 0; T.rights = d.rights; });
+    /* 운영 화면에서 추가한 도구: 견적 선택지와 커뮤니티 목록에 넣는다. 맡는 에셋(tool_caps)이 없으면 넣지 않는다 */
+    tools.forEach(function(t){
+      if(t.active === false) return;
+      var tc = caps.filter(function(c){ return c.tool_id === t.id; }); if(!tc.length && !(TOOLS[t.id] && !TOOLS[t.id].ext)) return;
+      var isNew = registerExtTool(t, plans.filter(function(p){ return p.tool_id === t.id; }), tc); if(!isNew) return;
+      BILLING[t.id] = t.billing || (TOOLS[t.id].usd ? '구독' : '무료'); TOOLCATS[t.id] = extCatsOf(t.id).join(' ');
+      if(!S.toolRev[t.id]) S.toolRev[t.id] = [];
+      var names = [t.name].concat((t.alias || '').split('|')).filter(Boolean).map(function(x){ return x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); });
+      if(!TOOLKEY.some(function(k){ return k[0] === t.id; })) TOOLKEY.push([t.id, new RegExp(names.join('|'), 'i')]);
+    });
     (rs[1].data || []).forEach(function(s){ CLOUD.toolStats[s.tool_id] = {star:+s.star, n:+s.n}; });
   });
 }
@@ -202,10 +214,14 @@ function uploadCloud(meta){
 }
 
 /* ---------- 기존 함수 감싸기 ---------- */
+var toolIds0 = toolIds;
+toolIds = function(){ return toolIds0().concat(EXT_IDS.filter(function(t){ return toolIds0().indexOf(t) < 0; })); };
 var exArt0 = exArt;
 exArt = function(cat, t, i, star){
   var u = CLOUD.examples[t + '|' + cat + '|' + (i + 1)];
-  return u ? '<img src="'+esc(u)+'" alt="" loading="lazy" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated">' : exArt0(cat, t, i, star);
+  if(u) return '<img src="'+esc(u)+'" alt="" loading="lazy" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated">';
+  if(TOOLS[t] && TOOLS[t].ext) return '<span class="ex-none">예시<br>준비 중</span>'; /* 추가한 도구는 실제 예시가 올라오기 전까지 그림을 지어내지 않는다 */
+  return exArt0(cat, t, i, star);
 };
 var workArt0 = workArt;
 workArt = function(w, size){

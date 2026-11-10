@@ -7,7 +7,7 @@ var SHOTS = {pixellab:{obj:[1,1,0,1], scene:[0,1,0,1], ui:[1,1,1,0]}, retro:{obj
 function rowsOf(st){
   syncSt(st); var inv = st.inv, rows = [], sk, sty, cls, D, SA;
   var aiAnim = st.ai.anim;
-  function add(r){ r.shots = {}; r.opts.forEach(function(o){ var sh = SHOTS[o.t] && SHOTS[o.t][r.cat]; if(sh && o.m === 'ai') r.shots[o.t] = sh; }); rows.push(r); }
+  function add(r){ if(typeof extOpts === 'function') extOpts(r); r.shots = {}; r.opts.forEach(function(o){ var sh = SHOTS[o.t] && SHOTS[o.t][r.cat]; if(sh && o.m === 'ai') r.shots[o.t] = sh; }); rows.push(r); }
   /* 움직이는 오브젝트 묶음 */
   inv.obj.forEach(function(g){
     var sk = styleOfRow(st, g.style), vk = viewOfRow(st, g.view), sty = STYLES[sk] || STYLES.px32, cls = sty.cls, V = VIEWS[vk] || VIEWS.side, D = sty.dh, SA = sty.ai, vf = V.vf, a = g.a || 3, animDirect = a * D * 0.8 * vf, opts = [];

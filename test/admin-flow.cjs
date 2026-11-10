@@ -1,0 +1,37 @@
+// 운영 화면 검사(가짜 Supabase). 도구 추가, 상태 바꾸기, 예시 올리기, 소식 등록이 서버로 가는지 본다.
+const { chromium } = require('playwright'); const path = require('path'), fs = require('fs');
+(async () => {
+  const mock = 'window.__mockAdmin=true;\n' + fs.readFileSync(path.resolve(__dirname, 'cloud-mock.js'), 'utf8');
+  const html = fs.readFileSync(path.resolve(__dirname, '../dist/admin.html'), 'utf8').replace(/window\.MAP_CONFIG = window\.MAP_CONFIG \|\| \{[^;]*\};/, 'window.MAP_CONFIG = {supabaseUrl:"https://mock.supabase.co", supabaseAnonKey:"k"};');
+  const tmp = path.resolve(__dirname, '../dist/admin.test.html'); fs.writeFileSync(tmp, html);
+  const b = await chromium.launch(), ctx = await b.newContext({ viewport: { width: 1200, height: 900 } });
+  await ctx.route('**/supabase-js@*/**', (r) => r.fulfill({ contentType: 'text/javascript', body: mock }));
+  const p = await ctx.newPage(); p.setDefaultTimeout(5000); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+  let fail = 0; const ok = (c, m) => { console.log((c ? 'ok  ' : 'FAIL') + ' ' + m); if (!c) fail++; };
+  const db = () => p.evaluate(() => window.__mockdb);
+  await p.goto('file://' + tmp); await p.waitForTimeout(500);
+  await p.fill('#email', 'admin@example.com'); await p.fill('#pw', 'right-password'); await p.click('#loginF button'); await p.waitForTimeout(700);
+  ok((await p.innerText('#who')).includes('운영자로'), '운영자로 로그인됨');
+  ok((await p.innerText('#toolRows')).includes('NewGen') && (await p.innerText('#toolRows')).includes('목록만'), '도구 목록에 상태가 보임');
+  await p.click('[data-status="newgen|verified"]'); await p.waitForTimeout(400);
+  let d = await db(); ok(d.tools.find((t) => t.id === 'newgen').status === 'verified', '‘검증됨으로’를 누르면 상태가 바뀜');
+  await p.click('[data-tab=tools]');
+  await p.fill('#tId', 'tripo'); await p.fill('#tName', 'Tripo'); await p.fill('#tBill', '구독'); await p.fill('#tNote', '유료 플랜 결과물은 상업적 이용 가능');
+  await p.fill('[data-pk="0"]', 'free'); await p.fill('[data-pn="0"]', '무료'); await p.selectOption('[data-pr="0"]', 'none');
+  await p.fill('[data-pk="1"]', 'pro'); await p.fill('[data-pn="1"]', 'Pro'); await p.fill('[data-pm="1"]', '19.9'); await p.check('[data-pd="1"]');
+  await p.check('[data-cc="obj"]'); await p.check('[data-ck="obj|3d"]');
+  await p.click('#toolF button.p'); await p.waitForTimeout(600);
+  d = await db();
+  ok(d.tools.some((t) => t.id === 'tripo' && t.status === 'listed'), '새 도구가 ‘목록만’으로 저장됨');
+  ok(d.tool_plans.filter((x) => x.tool_id === 'tripo').length === 2 && d.tool_plans.some((x) => x.tool_id === 'tripo' && x.plan_key === 'pro' && x.usd_month === 19.9 && x.is_default), '요금제 두 개가 저장되고 견적 기준이 표시됨');
+  ok(d.tool_caps.some((c) => c.tool_id === 'tripo' && c.cat === 'obj' && JSON.stringify(c.cls) === '["3d"]'), '맡는 에셋과 그림체가 저장됨');
+  await p.click('[data-tab=examples]');
+  await p.selectOption('#eTool', 'pixellab'); await p.selectOption('#eCat', 'obj'); await p.selectOption('#eSlot', '2');
+  await p.setInputFiles('#eFile', { name: 'knight-walk.png', mimeType: 'image/png', buffer: Buffer.from('89504e470d0a1a0a', 'hex') });
+  await p.click('#exF button.p'); await p.waitForTimeout(600);
+  d = await db(); ok(d.uploads.some((u) => u.bucket === 'examples' && u.path === 'pixellab/obj-2.png') && d.examples.some((x) => x.tool_id === 'pixellab' && x.cat === 'obj' && x.slot === 2), '예시 파일이 정해진 이름으로 올라가고 기록됨');
+  await p.click('[data-tab=notice]'); await p.selectOption('#nTool', 'pixellab'); await p.fill('#nTitle', '테스트 소식'); await p.fill('#nBody', '내용'); await p.click('#noticeF button.p'); await p.waitForTimeout(400);
+  d = await db(); ok((d.notices || []).some((n) => n.title === '테스트 소식'), '변경 소식이 등록됨');
+  ok(errs.length === 0, '화면 오류 없음 ' + errs.join(' | '));
+  await b.close(); fs.unlinkSync(tmp); console.log(fail ? fail + '개 실패' : '모두 통과'); process.exit(fail ? 1 : 0);
+})();

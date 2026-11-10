@@ -37,6 +37,24 @@ const { chromium } = require('playwright'); const path = require('path'), fs = r
   await p.waitForTimeout(500);
   ok(await p.evaluate(() => __t.S.quotes.some((q) => q.name === '서버 저장 테스트' && (q.logs || []).length === 1)), '서버에서 내 게임과 작업 기록을 다시 불러옴');
 
+  // 서버에서 추가한 도구
+  await p.evaluate(() => __t.go('tools')); await p.waitForTimeout(300);
+  ok((await p.innerText('#view')).includes('NewGen'), '서버에서 추가한 도구가 커뮤니티 목록에 보임');
+  await p.click('[data-toolpage=newgen]'); await p.waitForTimeout(300);
+  ok((await p.innerText('#view')).includes('월 $9') && (await p.innerText('#view')).includes('상업적으로 쓸 수 있어요'), '추가한 도구의 요금제와 약관 요약이 보임');
+  await p.evaluate(() => __t.go('setup')); await p.click('[data-act=make]'); await p.waitForTimeout(1600);
+  const ext = await p.evaluate(() => __t.ev("JSON.stringify({opt: ROW.illus.opts.filter(function(o){ return o.t === 'newgen'; })[0] || null, ui: ROW.ui.opts.some(function(o){ return o.t === 'newgen'; }), picked: S.draft.quotes.some(function(q){ return Object.keys(q.picks).some(function(k){ return q.picks[k] === 'newgen'; }); })})"));
+  const ex = JSON.parse(ext);
+  ok(ex.opt && ex.opt.noAuto === true && ex.picked === false, '추가한 도구(목록만)는 선택지로 나오고 자동 추천에는 안 들어감');
+  ok(ex.ui === false, '맡지 않는 그림체(도트 UI)에는 선택지로 나오지 않음');
+  await p.click('.alist summary'); await p.click('[data-open=illus]'); await p.waitForTimeout(300);
+  ok((await p.innerText('#row-illus')).includes('NewGen'), '에셋 줄을 펼치면 추가한 도구가 보임');
+  await p.click('#row-illus [data-swap][data-t=newgen]'); await p.waitForTimeout(400);
+  ok(await p.evaluate(() => __t.ev("S.draft.quotes[S.draft.sel].picks.illus === 'newgen'")), '직접 고르면 그 도구로 바뀌고 월 비용에 반영됨: ' + (await p.innerText('.rbar .kv1 .v')));
+  ok((await p.innerText('.cmpwrap')).includes('NewGen') && (await p.innerText('.cmpwrap')).includes('준비 중'), '비교표에 추가한 도구가 뜨고, 예시 그림은 지어내지 않음');
+  await p.fill('#chatIn', '일러스트는 뉴젠 말고 직접 그릴래요'); await p.press('#chatIn', 'Enter'); await p.waitForTimeout(900);
+  ok(await p.evaluate(() => __t.ev("S.draft.quotes[S.draft.sel].picks.illus !== 'newgen'")), '도우미가 추가한 도구의 다른 이름(뉴젠)을 알아들음');
+
   // 커뮤니티: 서버 결과물이 보이고, 잠겨 있고, 토큰으로 열림
   await p.evaluate(() => __t.go('tools')); await p.click('[data-toolpage=pixellab]'); await p.waitForTimeout(300);
   ok((await p.innerText('#view')).includes('서버에서 온 기사 스프라이트'), '서버의 공개 결과물이 커뮤니티에 보임');

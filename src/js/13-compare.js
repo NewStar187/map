@@ -1,3 +1,4 @@
+var FEW_N = 3; // 평가한 결과물이 이보다 적으면 '근거 부족'으로 표시한다
 /* ============================== 견적 비교표: 열은 견적, 행은 에셋 종류 ============================== */
 var GRPN = {obj:'캐릭터·사물', scene:'배경·맵', ui:'UI·아이콘', illus:'일러스트', sfx:'효과음', bgm:'배경음악', text:'글·대사', code:'코드', loc:'번역'};
 var BASEP = {
@@ -24,7 +25,7 @@ function cmpCell(q, grp, st, qi, cont){
       vis = '<span class="cm-imgs">'+vis+'</span>'; }
     else if(r.cat === 'sfx' || r.cat === 'bgm') vis = '<span class="cm-snd">'+ui('play', 14)+' 예시 듣기</span>';
     var names = grp.rows.length > 1 && out.length > 1 ? '<small class="cm-for">'+grp.rows.filter(function(x){ return q.picks[x.id] === t; }).map(function(x){ return RN(x); }).join(', ')+'</small>' : '';
-    var st2 = '<span class="cm-st'+(qv.n ? '' : ' none')+'">'+(qv.n ? starTxt(qv.star) : '평가 없음')+'</span>';
+    var st2 = '<span class="cm-st'+(qv.n ? '' : ' none')+'">'+(qv.n ? starTxt(qv.star) + (qv.n < FEW_N ? ' <small class="cm-few" title="평가한 결과물이 '+qv.n+'개뿐이라 별점이 바뀔 수 있어요">근거 부족</small>' : '') : '평가 없음')+'</span>';
     var head = cont ? '<span class="cm-nm cont"><small>같은 도구</small>'+st2+'</span>' : '<span class="cm-nm"><i class="bd-dot" aria-hidden="true"></i><b>'+T.name+'</b>'+st2+'</span>';
     return '<span class="cm-tool" style="--tc:'+toolCol(t)+'">'+head+names+vis+'</span>';
   }).join('');
@@ -170,7 +171,7 @@ function cmpSec(q, g, st, t){
   if(selfT && (cap || r.cat === 'sfx' || r.cat === 'bgm')) vis = '<span class="cm-self">직접 만드는 에셋이라 예시가 없어요</span>';
   else if(cap){ vis = '<span class="cm-imgs'+(r.cat === 'illus' || r.cat === 'scene' || r.cat === 'ui' ? ' wide' : '')+'">' + cap.map(function(c, i){ return '<span class="cm-fig"><span class="cm-img">'+exArt(r.cat, t, i, qv.n ? qv.star : null)+'</span><small>'+c+'</small></span>'; }).join('') + '</span>'; }
   else if(r.cat === 'sfx' || r.cat === 'bgm') vis = '<span class="cm-snd" role="button" tabindex="0" data-play="'+r.cat+'|'+t+'">'+ui('play', 14)+' 예시 듣기<span class="wave" aria-hidden="true">'+[3,6,9,5,8,4,7,3,6,9,4,6].map(function(h){ return '<i style="height:'+h+'px"></i>'; }).join('')+'</span></span>';
-  var star = '<span class="cm-st'+(qv.n ? '' : ' none')+'">'+(qv.n ? starTxt(qv.star) : '평가 없음')+'</span>';
+  var star = '<span class="cm-st'+(qv.n ? '' : ' none')+'">'+(qv.n ? starTxt(qv.star) + (qv.n < FEW_N ? ' <small class="cm-few" title="평가한 결과물이 '+qv.n+'개뿐이라 별점이 바뀔 수 있어요">근거 부족</small>' : '') : '평가 없음')+'</span>';
   var part = g.rows.length > 1 && cellTools(q, g).list.length > 1 ? '<small class="cm-for">'+g.rows.filter(function(x){ return q.picks[x.id] === t; }).map(function(x){ return RN(x); }).join(', ')+'</small>' : '';
   return '<span class="cm-sh"><span class="cm-sk">'+esc(g.name)+' 별점</span>'+star+'</span>'+part+vis;
 }

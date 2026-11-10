@@ -1,0 +1,1434 @@
+{
+ "note": "MAP 추가 도구. 2026-11-10 1차 조사 결과이며 모두 목록만(listed) 상태로 넣는다. todo 는 사람이 원문에서 확인한다.",
+ "tools": [
+  {
+   "id": "scenario",
+   "name": "Scenario",
+   "alias": "시나리오",
+   "billing": "구독",
+   "color": "#7dd3fc",
+   "site_url": "https://www.scenario.com",
+   "pricing_url": "https://www.scenario.com/pricing",
+   "terms_url": "https://www.scenario.com/terms-of-service",
+   "terms_note": "유료 요금제는 모두 상업적 이용이 가능하고 결과물은 사용자 소유다. 무료 플랜은 개인·평가용으로만 쓸 수 있다.",
+   "terms_date": "2026-07-16",
+   "confidence": "확인",
+   "todo": [
+    "도트 그림을 지원하는지 확인(지금은 2D로만 넣음)",
+    "연간 결제 가격 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "none",
+     "estimated": false,
+     "note": "하루 50크레딧",
+     "default": false
+    },
+    {
+     "key": "starter",
+     "name": "Starter",
+     "usd_month": 15,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 1,500크레딧",
+     "default": true
+    },
+    {
+     "key": "pro",
+     "name": "Pro",
+     "usd_month": 45,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 5,000크레딧",
+     "default": false
+    },
+    {
+     "key": "max",
+     "name": "Max",
+     "usd_month": 75,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 10,000크레딧",
+     "default": false
+    }
+   ],
+   "caps": [
+    {
+     "cat": "obj",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "scene",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "ui",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "illus",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    }
+   ],
+   "ai": true,
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "leonardo",
+   "name": "Leonardo.ai",
+   "alias": "레오나르도",
+   "billing": "구독",
+   "color": "#c4b5fd",
+   "site_url": "https://leonardo.ai",
+   "pricing_url": "https://leonardo.ai/pricing",
+   "terms_url": "https://intercom.help/leonardo-ai/en/articles/8044018-commercial-usage",
+   "terms_note": "무료 플랜도 상업적 이용은 가능하지만 만든 그림이 모두 공개되고 다른 사람이 가져다 쓸 수 있다. 유료 플랜의 비공개 결과물은 사용자 소유다.",
+   "terms_date": null,
+   "confidence": "상업 이용 확인, 가격은 외부 자료",
+   "todo": [
+    "공식 가격 페이지가 열리지 않아 가격과 요금제 이름은 외부 자료 기준이다. 직접 확인할 것",
+    "이용약관 본문 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "하루 150토큰, 만든 그림 공개",
+     "default": false
+    },
+    {
+     "key": "essential",
+     "name": "Essential",
+     "usd_month": 12,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": true,
+     "note": "월 8,500토큰",
+     "default": true
+    },
+    {
+     "key": "premium",
+     "name": "Premium",
+     "usd_month": 30,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": true,
+     "note": "월 25,000토큰",
+     "default": false
+    },
+    {
+     "key": "ultimate",
+     "name": "Ultimate",
+     "usd_month": 60,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": true,
+     "note": "월 60,000토큰",
+     "default": false
+    }
+   ],
+   "caps": [
+    {
+     "cat": "obj",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "scene",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "ui",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "illus",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    }
+   ],
+   "ai": true,
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "layer",
+   "name": "Layer AI",
+   "alias": "레이어",
+   "billing": "구독 + 크레딧",
+   "color": "#fda4af",
+   "site_url": "https://www.layer.ai",
+   "pricing_url": "https://www.layer.ai/pricing",
+   "terms_url": "https://www.layer.ai/terms-of-service",
+   "terms_note": "구독하면 모든 사용자에게 상업적 이용 권리가 있고 결과물은 고객 소유다. 결과물로 경쟁 생성 모델을 학습시키는 것은 금지.",
+   "terms_date": "2026-10-08",
+   "confidence": "확인",
+   "todo": [
+    "무료 플랜이나 체험이 있는지 확인",
+    "월 $10(300 크리에이티브 유닛)이 어느 요금제인지 확인"
+   ],
+   "plans": [
+    {
+     "key": "base",
+     "name": "기본",
+     "usd_month": 10,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "300 크리에이티브 유닛, 1,000 유닛마다 $60 추가",
+     "default": true
+    }
+   ],
+   "caps": [
+    {
+     "cat": "obj",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "scene",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "ui",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "illus",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    }
+   ],
+   "ai": true,
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "chatgpt",
+   "name": "ChatGPT",
+   "alias": "챗GPT|챗지피티|GPT",
+   "billing": "구독",
+   "color": "#86efac",
+   "site_url": "https://chatgpt.com",
+   "pricing_url": "https://chatgpt.com/pricing/",
+   "terms_url": "https://openai.com/policies/terms-of-use/",
+   "terms_note": "약관이 결과물에 대한 권리를 사용자에게 넘기고, 무료·유료 구분 없이 상업적 목적으로 쓸 수 있다고 적는다. 다른 사용자에게 비슷한 결과가 나올 수 있다.",
+   "terms_date": null,
+   "confidence": "약관·Plus 가격 확인, Go·Pro 가격은 외부 자료",
+   "todo": [
+    "Go와 Pro 가격이 공식 페이지에서 보이지 않았다. 직접 확인할 것",
+    "요금제별 이미지 생성 한도 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "Free",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "이미지 생성 제한적",
+     "default": false
+    },
+    {
+     "key": "go",
+     "name": "Go",
+     "usd_month": 8,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": true,
+     "note": null,
+     "default": false
+    },
+    {
+     "key": "plus",
+     "name": "Plus",
+     "usd_month": 20,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": true
+    },
+    {
+     "key": "pro",
+     "name": "Pro",
+     "usd_month": 200,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": true,
+     "note": "$100짜리 단계도 있다고 함",
+     "default": false
+    }
+   ],
+   "caps": [
+    {
+     "cat": "illus",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "ui",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "code",
+     "cls": null,
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "text",
+     "cls": null,
+     "method": "ai",
+     "note": "말투와 설정은 직접 다듬어요"
+    }
+   ],
+   "ai": true,
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "firefly",
+   "name": "Adobe Firefly",
+   "alias": "파이어플라이|어도비",
+   "billing": "구독",
+   "color": "#fca5a5",
+   "site_url": "https://www.adobe.com/products/firefly.html",
+   "pricing_url": "https://www.adobe.com/products/firefly/plans.html",
+   "terms_url": "https://helpx.adobe.com/firefly/get-set-up/learn-the-basics/adobe-firefly-faq.html",
+   "terms_note": "Adobe 자체 Firefly 모델의 결과물은 상업적 목적으로 쓸 수 있다고 안내한다. 다른 회사 모델(파트너 모델)의 결과물은 사용자가 직접 판단해야 한다.",
+   "terms_date": null,
+   "confidence": "확인",
+   "todo": [
+    "무료 플랜의 생성 횟수 확인",
+    "생성형 AI 약관 본문과 날짜 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "매일 무료 생성",
+     "default": false
+    },
+    {
+     "key": "standard",
+     "name": "Standard",
+     "usd_month": 9.99,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 2,000크레딧",
+     "default": true
+    },
+    {
+     "key": "pro",
+     "name": "Pro",
+     "usd_month": 19.99,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 4,000크레딧",
+     "default": false
+    },
+    {
+     "key": "proplus",
+     "name": "Pro Plus",
+     "usd_month": 49.99,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 10,000크레딧",
+     "default": false
+    }
+   ],
+   "caps": [
+    {
+     "cat": "illus",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "scene",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "ui",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    }
+   ],
+   "ai": true,
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "flux",
+   "name": "FLUX (내 PC 실행)",
+   "alias": "플럭스|FLUX",
+   "billing": "무료 · 내 PC에서 실행",
+   "color": "#fde68a",
+   "site_url": "https://bfl.ai",
+   "pricing_url": "https://bfl.ai/licensing",
+   "terms_url": "https://huggingface.co/black-forest-labs/FLUX.1-schnell",
+   "terms_note": "FLUX.1 [schnell]과 FLUX.2 [klein] 4B는 Apache-2.0이라 상업적 이용에 제한이 없다. [dev] 계열은 비상업 라이선스라, 팔 게임의 에셋을 만들려면 유료 라이선스를 권한다.",
+   "terms_date": null,
+   "confidence": "확인",
+   "todo": [
+    "필요한 그래픽카드 메모리를 확인해 넣을 것(지금은 비어 있음)",
+    "[dev] 계열을 선택지로 안내할지 결정"
+   ],
+   "plans": [
+    {
+     "key": "local",
+     "name": "내 PC에서 실행",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "schnell 또는 klein 4B 기준",
+     "default": true
+    }
+   ],
+   "caps": [
+    {
+     "cat": "illus",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "scene",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "ui",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    }
+   ],
+   "ai": true,
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "ideogram",
+   "name": "Ideogram",
+   "alias": "아이디오그램",
+   "billing": "구독",
+   "color": "#a5b4fc",
+   "site_url": "https://ideogram.ai",
+   "pricing_url": "https://ideogram.ai/pricing",
+   "terms_url": "https://ideogram.ai/legal/tos",
+   "terms_note": "모든 요금제에서 상업적 이용이 가능하고 Ideogram은 결과물의 소유권을 주장하지 않는다. 기본으로 그림이 공개되며 비공개 생성은 Plus 이상만 된다.",
+   "terms_date": "2024-08-14",
+   "confidence": "확인",
+   "todo": [
+    "Plus의 크레딧과 연간 가격 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "만든 그림 공개",
+     "default": false
+    },
+    {
+     "key": "plus",
+     "name": "Plus",
+     "usd_month": 15,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "비공개 생성 가능",
+     "default": true
+    },
+    {
+     "key": "pro",
+     "name": "Pro",
+     "usd_month": 42,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 3,500크레딧",
+     "default": false
+    }
+   ],
+   "caps": [
+    {
+     "cat": "illus",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "ui",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    }
+   ],
+   "ai": true,
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "recraft",
+   "name": "Recraft",
+   "alias": "리크래프트",
+   "billing": "구독",
+   "color": "#f9a8d4",
+   "site_url": "https://www.recraft.ai",
+   "pricing_url": "https://www.recraft.ai/pricing",
+   "terms_url": "https://www.recraft.ai/docs/plans-and-billing/paid-plans.md",
+   "terms_note": "무료 플랜의 그림은 Recraft 소유이고 공개되며 상업적으로 쓸 수 없다. 유료 구독 중에 만든 그림은 해지 뒤에도 사용자 것이다.",
+   "terms_date": null,
+   "confidence": "확인",
+   "todo": [
+    "이용약관 본문과 날짜 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "none",
+     "estimated": false,
+     "note": null,
+     "default": false
+    },
+    {
+     "key": "basic",
+     "name": "Basic",
+     "usd_month": 12,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 1,000크레딧. 연간 결제 시 월 $10",
+     "default": true
+    },
+    {
+     "key": "pro",
+     "name": "Pro",
+     "usd_month": 20,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 2,000크레딧",
+     "default": false
+    }
+   ],
+   "caps": [
+    {
+     "cat": "illus",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "ui",
+     "cls": [
+      "2d"
+     ],
+     "method": "ai",
+     "note": "벡터 아이콘에 강해요"
+    }
+   ],
+   "ai": true,
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "tripo",
+   "name": "Tripo",
+   "alias": "트리포",
+   "billing": "구독",
+   "color": "#99f6e4",
+   "site_url": "https://www.tripo3d.ai",
+   "pricing_url": "https://www.tripo3d.ai/pricing",
+   "terms_url": "https://www.tripo3d.ai",
+   "terms_note": "공식 페이지가 열리지 않아 확인하지 못했다. 외부 자료는 유료 플랜에 상업적 이용이 포함되고 무료 플랜 결과물은 CC BY 4.0이라고 적는다.",
+   "terms_date": null,
+   "confidence": "외부 자료만",
+   "todo": [
+    "가격, 크레딧, 상업적 이용 조건을 모두 공식 페이지에서 확인할 것"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "check",
+     "estimated": true,
+     "note": "월 200크레딧, 모델 공개",
+     "default": false
+    },
+    {
+     "key": "pro",
+     "name": "Pro",
+     "usd_month": 20,
+     "usd_once": 0,
+     "rights": "check",
+     "estimated": true,
+     "note": "월 3,000크레딧",
+     "default": true
+    },
+    {
+     "key": "max",
+     "name": "Max",
+     "usd_month": 90,
+     "usd_once": 0,
+     "rights": "check",
+     "estimated": true,
+     "note": null,
+     "default": false
+    }
+   ],
+   "caps": [
+    {
+     "cat": "obj",
+     "cls": [
+      "3d"
+     ],
+     "method": "ai",
+     "note": "애니메이션은 따로 붙여야 해요"
+    },
+    {
+     "cat": "scene",
+     "cls": [
+      "3d"
+     ],
+     "method": "ai",
+     "note": null
+    }
+   ],
+   "ai": true,
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "rodin",
+   "name": "Rodin (Hyper3D)",
+   "alias": "로댕|Hyper3D|Rodin",
+   "billing": "구독",
+   "color": "#bae6fd",
+   "site_url": "https://hyper3d.ai",
+   "pricing_url": "https://hyper3d.ai/subscribe",
+   "terms_url": "https://hyper3d.ai/legal/terms",
+   "terms_note": "내보내기는 요금제에 따라 개인용 또는 상업용으로 허락된다. Creator 이상은 \"무제한 내보내기와 모든 용도\"가 포함된다. 약관은 소유권이 아니라 이용 허락을 준다.",
+   "terms_date": null,
+   "confidence": "확인(무료 플랜의 상업 이용은 불분명)",
+   "todo": [
+    "무료 플랜 결과물을 상업적으로 쓸 수 있는지 확인",
+    "요금제별 크레딧 수 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "check",
+     "estimated": false,
+     "note": null,
+     "default": false
+    },
+    {
+     "key": "creator",
+     "name": "Creator",
+     "usd_month": 30,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": "월 약 60개 모델. 연간 결제 시 월 $24",
+     "default": true
+    },
+    {
+     "key": "business",
+     "name": "Business",
+     "usd_month": 120,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": false
+    }
+   ],
+   "caps": [
+    {
+     "cat": "obj",
+     "cls": [
+      "3d"
+     ],
+     "method": "ai",
+     "note": "애니메이션은 따로 붙여야 해요"
+    }
+   ],
+   "ai": true,
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "stableaudio",
+   "name": "Stable Audio",
+   "alias": "스테이블 오디오",
+   "billing": "구독",
+   "color": "#fdba74",
+   "site_url": "https://stableaudio.com",
+   "pricing_url": "https://stableaudio.com/pricing",
+   "terms_url": "https://stability.ai/license",
+   "terms_note": "공식 가격·약관 페이지가 열리지 않았다. 외부 자료는 무료 플랜이 비상업용이고 유료 플랜에 상업적 이용 허락이 포함된다고 적는다.",
+   "terms_date": null,
+   "confidence": "가격은 오래됐을 수 있는 공식 안내, 상업 이용은 외부 자료",
+   "todo": [
+    "지금의 요금제 이름과 가격, 요금제별 상업적 이용 조건을 공식 페이지에서 확인할 것"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "none",
+     "estimated": true,
+     "note": "가입 시 50크레딧",
+     "default": false
+    },
+    {
+     "key": "creator",
+     "name": "Creator",
+     "usd_month": 12,
+     "usd_once": 0,
+     "rights": "check",
+     "estimated": true,
+     "note": "월 660크레딧",
+     "default": true
+    },
+    {
+     "key": "pro",
+     "name": "Pro",
+     "usd_month": 30,
+     "usd_once": 0,
+     "rights": "check",
+     "estimated": true,
+     "note": null,
+     "default": false
+    }
+   ],
+   "caps": [
+    {
+     "cat": "bgm",
+     "cls": null,
+     "method": "ai",
+     "note": "반복 구간은 직접 잘라야 해요"
+    },
+    {
+     "cat": "sfx",
+     "cls": null,
+     "method": "ai",
+     "note": null
+    }
+   ],
+   "ai": true,
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "aiva",
+   "name": "AIVA",
+   "alias": "아이바",
+   "billing": "구독",
+   "color": "#d8b4fe",
+   "site_url": "https://www.aiva.ai",
+   "pricing_url": "https://www.aiva.ai/pricing",
+   "terms_url": "https://www.aiva.ai/legal/1",
+   "terms_note": "Pro 요금제만 저작권이 사용자에게 있고 제한 없이 수익화할 수 있다. Standard는 유튜브·트위치 같은 곳에서만 수익화할 수 있어 판매하는 게임에는 맞지 않고, 무료 플랜은 수익화할 수 없다.",
+   "terms_date": null,
+   "confidence": "확인(가격은 유로, 연간 결제 기준)",
+   "todo": [
+    "가격이 유로와 연간 결제 기준으로만 나온다. 월 결제 가격과 달러 가격 확인(지금 값은 유로를 달러로 어림한 것)"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "none",
+     "estimated": false,
+     "note": "월 3회 내려받기",
+     "default": false
+    },
+    {
+     "key": "standard",
+     "name": "Standard",
+     "usd_month": 12,
+     "usd_once": 0,
+     "rights": "none",
+     "estimated": true,
+     "note": "€11(연간 결제). 게임에 넣어 팔 수 없음",
+     "default": false
+    },
+    {
+     "key": "pro",
+     "name": "Pro",
+     "usd_month": 36,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": true,
+     "note": "€33(연간 결제). 월 300회 내려받기",
+     "default": true
+    }
+   ],
+   "caps": [
+    {
+     "cat": "bgm",
+     "cls": null,
+     "method": "ai",
+     "note": null
+    }
+   ],
+   "ai": true,
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "chiptone",
+   "name": "ChipTone",
+   "ai": false,
+   "alias": "칩톤",
+   "billing": "무료",
+   "color": "#93c5fd",
+   "site_url": "https://sfbgames.itch.io/chiptone",
+   "pricing_url": "https://sfbgames.itch.io/chiptone",
+   "terms_url": "https://sfbgames.itch.io/chiptone",
+   "terms_note": "CC0로, 상업적 목적을 포함해 어떤 용도로든 무료로 쓸 수 있고 출처 표시도 필요 없다.",
+   "terms_date": null,
+   "confidence": "확인",
+   "todo": [],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": true
+    }
+   ],
+   "caps": [
+    {
+     "cat": "sfx",
+     "cls": null,
+     "method": "direct",
+     "note": "8비트풍 효과음을 직접 만들어요"
+    }
+   ],
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "freesound",
+   "name": "Freesound",
+   "ai": false,
+   "alias": "프리사운드",
+   "billing": "무료 음원",
+   "color": "#a7f3d0",
+   "site_url": "https://freesound.org",
+   "pricing_url": "https://freesound.org",
+   "terms_url": "https://freesound.org/help/faq/",
+   "terms_note": "소리마다 라이선스가 다르다. CC0는 자유롭게, CC BY는 출처를 표시하면 쓸 수 있고, CC BY-NC는 상업적으로 쓸 수 없다.",
+   "terms_date": null,
+   "confidence": "확인",
+   "todo": [],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "check",
+     "estimated": false,
+     "note": null,
+     "default": true
+    }
+   ],
+   "caps": [
+    {
+     "cat": "sfx",
+     "cls": null,
+     "method": "free",
+     "note": "소리마다 라이선스를 확인해요"
+    },
+    {
+     "cat": "bgm",
+     "cls": null,
+     "method": "free",
+     "note": "소리마다 라이선스를 확인해요"
+    }
+   ],
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "gemini",
+   "name": "Gemini",
+   "alias": "제미나이|제미니",
+   "billing": "구독",
+   "color": "#bfdbfe",
+   "site_url": "https://gemini.google",
+   "pricing_url": "https://gemini.google/subscriptions/",
+   "terms_url": "https://policies.google.com/terms",
+   "terms_note": "Google 약관은 사용자가 만든 콘텐츠의 소유권을 주장하지 않는다고 적는다. 다만 결과물의 상업적 이용을 명시적으로 허락하는 문장은 찾지 못했다.",
+   "terms_date": "2026-07-30",
+   "confidence": "가격 확인, 상업 이용은 소유권 문장에서 미루어 본 것",
+   "todo": [
+    "결과물의 상업적 이용을 명시한 문장이 있는지 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "check",
+     "estimated": false,
+     "note": null,
+     "default": false
+    },
+    {
+     "key": "plus",
+     "name": "Google AI Plus",
+     "usd_month": 4.99,
+     "usd_once": 0,
+     "rights": "check",
+     "estimated": false,
+     "note": null,
+     "default": false
+    },
+    {
+     "key": "pro",
+     "name": "Google AI Pro",
+     "usd_month": 19.99,
+     "usd_once": 0,
+     "rights": "check",
+     "estimated": false,
+     "note": null,
+     "default": true
+    },
+    {
+     "key": "ultra",
+     "name": "Google AI Ultra",
+     "usd_month": 99.99,
+     "usd_once": 0,
+     "rights": "check",
+     "estimated": false,
+     "note": null,
+     "default": false
+    }
+   ],
+   "caps": [
+    {
+     "cat": "code",
+     "cls": null,
+     "method": "ai",
+     "note": null
+    },
+    {
+     "cat": "text",
+     "cls": null,
+     "method": "ai",
+     "note": "말투와 설정은 직접 다듬어요"
+    }
+   ],
+   "ai": true,
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "cursor",
+   "name": "Cursor",
+   "alias": "커서",
+   "billing": "구독",
+   "color": "#e5e7eb",
+   "site_url": "https://cursor.com",
+   "pricing_url": "https://cursor.com/pricing",
+   "terms_url": "https://cursor.com/terms-of-service",
+   "terms_note": "약관이 제안된 코드에 대한 권리를 사용자에게 넘긴다. 무료·유료 구분은 없다. 제안된 코드로 경쟁 모델을 학습시키는 것은 금지.",
+   "terms_date": "2026-09-03",
+   "confidence": "확인",
+   "todo": [
+    "요금제가 최근에 바뀌었다(Plus·Premium·Super·Ultra). 외부 모델을 쓸 때 따로 드는 요금 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "Free",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": false
+    },
+    {
+     "key": "plus",
+     "name": "Plus",
+     "usd_month": 8,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": true
+    },
+    {
+     "key": "premium",
+     "name": "Premium",
+     "usd_month": 30,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": false
+    },
+    {
+     "key": "super",
+     "name": "Super",
+     "usd_month": 100,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": false
+    },
+    {
+     "key": "ultra",
+     "name": "Ultra",
+     "usd_month": 200,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": false
+    }
+   ],
+   "caps": [
+    {
+     "cat": "code",
+     "cls": null,
+     "method": "ai",
+     "note": null
+    }
+   ],
+   "ai": true,
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "opengameart",
+   "name": "OpenGameArt",
+   "ai": false,
+   "alias": "오픈게임아트",
+   "billing": "무료 에셋",
+   "color": "#bbf7d0",
+   "site_url": "https://opengameart.org",
+   "pricing_url": "https://opengameart.org",
+   "terms_url": "https://opengameart.org/content/faq",
+   "terms_note": "올라온 에셋은 모두 상업 프로젝트에 쓸 수 있지만 라이선스마다 조건이 다르다. CC0는 조건 없음, CC BY는 출처 표시, CC BY-SA는 같은 라이선스로 공개, GPL은 따로 검토가 필요하다.",
+   "terms_date": null,
+   "confidence": "확인",
+   "todo": [],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "check",
+     "estimated": false,
+     "note": null,
+     "default": true
+    }
+   ],
+   "caps": [
+    {
+     "cat": "obj",
+     "cls": null,
+     "method": "free",
+     "note": "그림체가 게임과 다를 수 있어요"
+    },
+    {
+     "cat": "scene",
+     "cls": null,
+     "method": "free",
+     "note": "그림체가 게임과 다를 수 있어요"
+    },
+    {
+     "cat": "ui",
+     "cls": null,
+     "method": "free",
+     "note": "그림체가 게임과 다를 수 있어요"
+    },
+    {
+     "cat": "sfx",
+     "cls": null,
+     "method": "free",
+     "note": "에셋마다 라이선스를 확인해요"
+    },
+    {
+     "cat": "bgm",
+     "cls": null,
+     "method": "free",
+     "note": "에셋마다 라이선스를 확인해요"
+    }
+   ],
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "itchassets",
+   "name": "itch.io 무료 에셋",
+   "ai": false,
+   "alias": "itch|잇치",
+   "billing": "무료 에셋",
+   "color": "#fecaca",
+   "site_url": "https://itch.io/game-assets/free",
+   "pricing_url": "https://itch.io/game-assets/free",
+   "terms_url": "https://itch.io/docs/creators/quality-guidelines",
+   "terms_note": "사이트 공통 라이선스가 없어 에셋마다 조건이 다르다. 에셋 페이지에 적힌 조건을 읽어야 한다. AI로 만든 에셋은 표시가 의무다.",
+   "terms_date": null,
+   "confidence": "확인",
+   "todo": [],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "check",
+     "estimated": false,
+     "note": null,
+     "default": true
+    }
+   ],
+   "caps": [
+    {
+     "cat": "obj",
+     "cls": null,
+     "method": "free",
+     "note": "그림체가 게임과 다를 수 있어요"
+    },
+    {
+     "cat": "scene",
+     "cls": null,
+     "method": "free",
+     "note": "그림체가 게임과 다를 수 있어요"
+    },
+    {
+     "cat": "ui",
+     "cls": null,
+     "method": "free",
+     "note": "그림체가 게임과 다를 수 있어요"
+    },
+    {
+     "cat": "sfx",
+     "cls": null,
+     "method": "free",
+     "note": "에셋마다 조건을 확인해요"
+    },
+    {
+     "cat": "bgm",
+     "cls": null,
+     "method": "free",
+     "note": "에셋마다 조건을 확인해요"
+    }
+   ],
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "krita",
+   "name": "Krita",
+   "ai": false,
+   "alias": "크리타",
+   "billing": "무료",
+   "color": "#c7d2fe",
+   "site_url": "https://krita.org",
+   "pricing_url": "https://krita.org/en/download/",
+   "terms_url": "https://krita.org/en/about/license/",
+   "terms_note": "Krita로 만든 것은 만든 사람의 것이다. 상업적 이용 가능, 출처 표시 불필요.",
+   "terms_date": null,
+   "confidence": "확인",
+   "todo": [],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": true
+    }
+   ],
+   "caps": [
+    {
+     "cat": "obj",
+     "cls": [
+      "2d"
+     ],
+     "method": "direct",
+     "note": null
+    },
+    {
+     "cat": "scene",
+     "cls": [
+      "2d"
+     ],
+     "method": "direct",
+     "note": null
+    },
+    {
+     "cat": "ui",
+     "cls": [
+      "2d"
+     ],
+     "method": "direct",
+     "note": null
+    },
+    {
+     "cat": "illus",
+     "cls": [
+      "2d"
+     ],
+     "method": "direct",
+     "note": null
+    }
+   ],
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "piskel",
+   "name": "Piskel",
+   "ai": false,
+   "alias": "피스켈",
+   "billing": "무료",
+   "color": "#fef08a",
+   "site_url": "https://www.piskelapp.com",
+   "pricing_url": "https://www.piskelapp.com",
+   "terms_url": "https://www.piskelapp.com/terms",
+   "terms_note": "만든 그림의 모든 권리는 만든 사람에게 있다. Piskel 표시는 부탁일 뿐 의무가 아니다.",
+   "terms_date": "2025-06-01",
+   "confidence": "확인",
+   "todo": [],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "ok",
+     "estimated": false,
+     "note": null,
+     "default": true
+    }
+   ],
+   "caps": [
+    {
+     "cat": "obj",
+     "cls": [
+      "pixel"
+     ],
+     "method": "direct",
+     "note": null
+    },
+    {
+     "cat": "scene",
+     "cls": [
+      "pixel"
+     ],
+     "method": "direct",
+     "note": null
+    },
+    {
+     "cat": "ui",
+     "cls": [
+      "pixel"
+     ],
+     "method": "direct",
+     "note": null
+    }
+   ],
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  },
+  {
+   "id": "lmms",
+   "name": "LMMS",
+   "ai": false,
+   "alias": "엘엠엠에스",
+   "billing": "무료",
+   "color": "#bef264",
+   "site_url": "https://lmms.io",
+   "pricing_url": "https://lmms.io",
+   "terms_url": "https://github.com/LMMS/lmms",
+   "terms_note": "프로그램은 GPL-2.0이다. 만든 음악의 권리와 기본으로 들어 있는 샘플의 라이선스는 공식 페이지에서 확인하지 못했다.",
+   "terms_date": null,
+   "confidence": "가격·라이선스 확인, 결과물 권리는 미확인",
+   "todo": [
+    "만든 음악과 기본 샘플을 상업적으로 써도 되는지 확인"
+   ],
+   "plans": [
+    {
+     "key": "free",
+     "name": "무료",
+     "usd_month": 0,
+     "usd_once": 0,
+     "rights": "check",
+     "estimated": false,
+     "note": null,
+     "default": true
+    }
+   ],
+   "caps": [
+    {
+     "cat": "bgm",
+     "cls": null,
+     "method": "direct",
+     "note": null
+    }
+   ],
+   "status": "listed",
+   "gpu_min_gb": null,
+   "checked_on": "2026-11-10"
+  }
+ ],
+ "excluded": [
+  {
+   "name": "Udio",
+   "why": "음반사 제휴 뒤 음원 내려받기가 막혀 있어, 지금은 게임에 넣을 음악을 받을 수 없다. 내려받기가 다시 열리면 추가한다."
+  }
+ ]
+}

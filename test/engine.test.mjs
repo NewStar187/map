@@ -103,3 +103,28 @@ test('말로 고치기: 묶음 개수, 기타 에셋, 큰 기능', () => {
   e.applyEdits('튜토리얼은 빼 줘', st, 'intake');
   assert.equal(st.inv.feat.tutorial, false);
 });
+
+test('서버에서 추가한 도구: 목록만이면 선택지에만 나오고, 검증됨이면 추천 후보가 된다', () => {
+  const tool = { id: 'testgen', name: 'TestGen', ai: true, status: 'listed', terms_note: '유료 플랜은 상업적 이용 가능' };
+  const plans = [{ plan_key: 'free', name: '무료', usd_month: 0, usd_once: 0, rights: 'none' }, { plan_key: 'pro', name: 'Pro', usd_month: 8, usd_once: 0, rights: 'ok', is_default: true }];
+  const caps = [{ cat: 'illus', cls: ['pixel', '2d'], method: 'ai' }, { cat: 'bgm', cls: null, method: 'ai' }];
+  assert.equal(e.registerExtTool(tool, plans, caps), true);
+  assert.equal(e.TOOLS.testgen.usd, 8);
+  let q = quotes((st) => { st.budget = 50000; });
+  const illus = q.rows.find((r) => r.id === 'illus'), bgm = q.rows.find((r) => r.id === 'bgm'), ui = q.rows.find((r) => r.id === 'ui');
+  assert.ok(illus.opts.some((o) => o.t === 'testgen' && o.noAuto), '일러스트 줄에 목록만 선택지로 나와야 함');
+  assert.ok(bgm.opts.some((o) => o.t === 'testgen'), '배경음악 줄에도 나와야 함');
+  assert.ok(!ui.opts.some((o) => o.t === 'testgen'), '맡지 않는 에셋 줄에는 나오면 안 됨');
+  assert.ok(illus.opts.findIndex((o) => o.t === 'testgen') < illus.opts.length, '선택지 순서 유지');
+  for (const s of e.STRATS) assert.ok(!Object.values(q.out[s].picks).includes('testgen'), s + ': 목록만 도구를 자동으로 고르면 안 됨');
+  // 3D 그림체에서는 일러스트 선택지에 나오지 않는다(맡는 그림체가 도트·2D뿐)
+  const q3 = quotes((st) => { const k = Object.keys(e.STYLES).find((x) => e.STYLES[x].cls === '3d'); st.styles = [k]; st.style = k; });
+  assert.ok(!q3.rows.find((r) => r.id === 'illus').opts.some((o) => o.t === 'testgen'));
+  // 검증됨으로 바꾸면 자동 추천 후보가 된다
+  e.registerExtTool(Object.assign({}, tool, { status: 'verified' }), plans, caps);
+  q = quotes((st) => { st.budget = 50000; });
+  assert.ok(q.rows.find((r) => r.id === 'illus').opts.some((o) => o.t === 'testgen' && !o.noAuto));
+  // 기본 도구는 서버 등록으로 덮어쓰지 않는다
+  assert.equal(e.registerExtTool({ id: 'pixellab', name: '바뀐 이름', ai: true }, [], []), false);
+  assert.equal(e.TOOLS.pixellab.name, 'PixelLab');
+});

@@ -32,7 +32,7 @@
   </section>
 
   <div id="app" hidden>
-    <div class="tabs" role="group" aria-label="할 일"><button data-tab="check" aria-pressed="true">가격·약관 확인</button><button data-tab="notice" aria-pressed="false">변경 소식 등록</button><button data-tab="works" aria-pressed="false">결과물 검토</button><button id="out">로그아웃</button></div>
+    <div class="tabs" role="group" aria-label="할 일"><button data-tab="check" aria-pressed="true">가격·약관 확인</button><button data-tab="notice" aria-pressed="false">변경 소식 등록</button><button data-tab="tools" aria-pressed="false">도구 추가·수정</button><button data-tab="examples" aria-pressed="false">예시 올리기</button><button data-tab="works" aria-pressed="false">결과물 검토</button><button id="out">로그아웃</button></div>
 
     <section data-pane="check">
       <h2>가격·약관 확인</h2>
@@ -52,6 +52,32 @@
         <div class="row"><button class="p">등록</button></div>
       </form>
       <table><thead><tr><th>날짜</th><th>도구</th><th>제목</th></tr></thead><tbody id="noticeRows"></tbody></table>
+    </section>
+
+    <section data-pane="tools" hidden>
+      <h2>도구 추가·수정</h2>
+      <p>여기서 추가한 도구는 코드 수정 없이 견적의 선택지와 커뮤니티에 나와요. ‘목록만’은 선택지로만 나오고, ‘검증됨’으로 바꾸면 자동 추천 후보가 돼요. 기본 도구 15개는 가격과 요약만 바뀌어요.</p>
+      <div class="row"><label>고칠 도구 불러오기<select id="tPick"><option value="">새 도구</option></select></label></div>
+      <form id="toolF" style="display:flex;flex-direction:column;gap:10px">
+        <div class="row"><label>id (영문 소문자·숫자)<input id="tId" required pattern="[a-z0-9]{2,20}" placeholder="예: leonardo"></label><label>이름<input id="tName" required maxlength="30"></label><label>다른 이름 (|로 구분)<input id="tAlias" placeholder="예: 레오나르도"></label></div>
+        <div class="row"><label>결제 방식<input id="tBill" placeholder="예: 구독, 한 번 구매, 무료"></label><label>색<input id="tColor" type="color" value="#88ccff" style="height:40px;padding:2px"></label><label>상태<select id="tStatus"><option value="listed">목록만</option><option value="verified">검증됨</option></select></label><label>최소 그래픽카드 메모리(GB)<input id="tGpu" type="number" min="0" max="64" placeholder="내 PC 실행 도구만"></label></div>
+        <label class="row" style="flex-direction:row;align-items:center;gap:8px"><input id="tAi" type="checkbox" checked style="width:auto"> 생성형 AI 도구예요</label>
+        <div class="row"><label>사이트<input id="tSite" type="url"></label><label>가격 페이지<input id="tPrice" type="url"></label><label>약관 페이지<input id="tTerms" type="url"></label></div>
+        <label>상업적 이용 요약 (한두 문장)<textarea id="tNote" maxlength="400"></textarea></label>
+        <h2 style="margin-top:6px">요금제</h2>
+        <table><thead><tr><th>키(영문)</th><th>이름</th><th>월 $</th><th>한 번 $</th><th>상업적 이용</th><th>추정값</th><th>견적 기준</th></tr></thead><tbody id="planRows"></tbody></table>
+        <h2 style="margin-top:6px">만들 수 있는 에셋</h2>
+        <table><thead><tr><th>에셋</th><th>그림체 (비우면 모두)</th><th>방식</th><th>메모</th></tr></thead><tbody id="capRows"></tbody></table>
+        <div class="row"><button class="p">저장</button></div>
+      </form>
+    </section>
+
+    <section data-pane="examples" hidden>
+      <h2>예시 올리기</h2>
+      <p>기준 프롬프트를 그 도구에 그대로 넣어 받은 결과만 올려요. 올리면 견적 비교표의 그 칸에 바로 떠요. 같은 칸에 다시 올리면 바뀌어요.</p>
+      <form id="exF" class="row"><label>도구<select id="eTool" required></select></label><label>에셋<select id="eCat"><option value="obj">캐릭터·사물</option><option value="scene">배경·맵</option><option value="ui">UI·아이콘</option><option value="illus">일러스트</option><option value="sfx">효과음</option><option value="bgm">배경음악</option></select></label><label>칸<select id="eSlot"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label><label>파일<input id="eFile" type="file" required accept="image/png,image/gif,image/webp,audio/wav,audio/mpeg"></label><button class="p">올리기</button></form>
+      <p id="ePrompt"></p>
+      <table><thead><tr><th>도구</th><th>에셋</th><th>칸</th><th>미리 보기</th><th></th></tr></thead><tbody id="exRows"></tbody></table>
     </section>
 
     <section data-pane="works" hidden>
@@ -80,18 +106,19 @@
     var me = await sb.from('profiles').select('nickname,is_admin').eq('id', s.user.id).single();
     if(me.error || !me.data.is_admin){ $('who').textContent = '이 계정은 운영자가 아니에요.'; $('login').hidden = false; $('app').hidden = true; return; }
     $('who').textContent = esc(me.data.nickname) + ' 님, 운영자로 들어왔어요.'; $('login').hidden = true; $('app').hidden = false;
-    await Promise.all([loadTools(), loadNotices(), loadWorks()]);
+    buildToolForm(); await Promise.all([loadTools(), loadNotices(), loadWorks(), loadExamples()]);
   }
   async function loadTools(){
-    var r = await sb.from('tools').select('id,name,terms_note,terms_url,pricing_url,checked_on,tool_plans(name,usd_month,usd_once,rights,price_estimated)').order('checked_on', {ascending:true});
+    var r = await sb.from('tools').select('id,name,status,terms_note,terms_url,pricing_url,checked_on,tool_plans(name,usd_month,usd_once,rights,price_estimated)').order('checked_on', {ascending:true});
     if(r.error) return say('도구를 불러오지 못했어요: ' + r.error.message, true);
-    $('nTool').innerHTML = r.data.map(function(t){ return '<option value="' + esc(t.id) + '">' + esc(t.name) + '</option>'; }).join('');
+    var optsH = r.data.slice().sort(function(a, b){ return a.name.localeCompare(b.name); }).map(function(t){ return '<option value="' + esc(t.id) + '">' + esc(t.name) + '</option>'; }).join('');
+    $('nTool').innerHTML = optsH; $('eTool').innerHTML = optsH; $('tPick').innerHTML = '<option value="">새 도구</option>' + optsH;
     $('toolRows').innerHTML = r.data.map(function(t){
       var old = days(t.checked_on) > 30;
-      return '<tr><td><b>' + esc(t.name) + '</b><br><a href="' + esc(t.pricing_url) + '" target="_blank" rel="noopener">가격</a> · <a href="' + esc(t.terms_url) + '" target="_blank" rel="noopener">약관</a></td>'
+      return '<tr><td><b>' + esc(t.name) + '</b> <small>' + (t.status === 'verified' ? '검증됨' : '목록만') + '</small><br><a href="' + esc(t.pricing_url) + '" target="_blank" rel="noopener">가격</a> · <a href="' + esc(t.terms_url) + '" target="_blank" rel="noopener">약관</a></td>'
         + '<td>' + (t.tool_plans || []).map(function(p){ return esc(p.name) + ' ' + (p.usd_once > 0 ? '한 번 $' + p.usd_once : p.usd_month > 0 ? '월 $' + p.usd_month : '무료') + (p.price_estimated ? ' (추정)' : ''); }).join('<br>') + '</td>'
         + '<td>' + esc(t.terms_note) + '</td><td class="' + (old ? 'old' : 'ok') + '">' + esc(t.checked_on || '없음') + '</td>'
-        + '<td><button data-checked="' + esc(t.id) + '">오늘 확인함</button></td></tr>';
+        + '<td><button data-checked="' + esc(t.id) + '">오늘 확인함</button> <button data-status="' + esc(t.id) + '|' + (t.status === 'verified' ? 'listed' : 'verified') + '">' + (t.status === 'verified' ? '목록만으로' : '검증됨으로') + '</button></td></tr>';
     }).join('');
   }
   async function loadNotices(){
@@ -114,7 +141,55 @@
     var b = e.target.closest('button'); if(!b) return; var d = b.dataset, r;
     if(d.tab){ document.querySelectorAll('[data-tab]').forEach(function(x){ x.setAttribute('aria-pressed', x === b); }); document.querySelectorAll('[data-pane]').forEach(function(x){ x.hidden = x.dataset.pane !== d.tab; }); return; }
     if(d.checked){ r = await sb.from('tools').update({checked_on:today()}).eq('id', d.checked); if(r.error) return say(r.error.message, true); say('확인한 날짜를 오늘로 바꿨어요.'); return loadTools(); }
+    if(d.status){ var sp = d.status.split('|'); r = await sb.from('tools').update({status:sp[1]}).eq('id', sp[0]); if(r.error) return say(r.error.message, true); say(sp[1] === 'verified' ? '검증됨으로 바꿨어요. 이제 자동 추천 후보예요.' : '목록만으로 바꿨어요.'); return loadTools(); }
+    if(d.exdel){ var xp = d.exdel.split('|'); await sb.storage.from('examples').remove([xp[1]]); r = await sb.from('examples').delete().eq('id', +xp[0]); if(r.error) return say(r.error.message, true); say('예시를 지웠어요.'); return loadExamples(); }
     if(d.show || d.hide){ r = await sb.from('works').update({status:d.show ? 'visible' : 'hidden'}).eq('id', d.show || d.hide); if(r.error) return say(r.error.message, true); say(d.show ? '공개했어요.' : '숨겼어요.'); return loadWorks(); }
+  });
+  /* ---------- 도구 추가·수정 ---------- */
+  var CATS = [['obj', '캐릭터·사물', 1], ['scene', '배경·맵', 1], ['ui', 'UI·아이콘', 1], ['illus', '일러스트', 1], ['sfx', '효과음', 0], ['bgm', '배경음악', 0], ['code', '코드', 0], ['text', '글·대사', 0]];
+  function buildToolForm(){
+    var pr = ''; for(var i = 0; i < 5; i++) pr += '<tr><td><input data-pk="' + i + '" pattern="[a-z0-9]{1,20}" placeholder="' + (i ? '' : 'free') + '"></td><td><input data-pn="' + i + '" placeholder="' + (i ? '' : '무료') + '"></td><td><input data-pm="' + i + '" type="number" min="0" step="0.01" style="width:90px"></td><td><input data-po="' + i + '" type="number" min="0" step="0.01" style="width:90px"></td><td><select data-pr="' + i + '"><option value="ok">가능</option><option value="attr">출처 표시하면 가능</option><option value="none">안 됨</option><option value="check">확인 필요</option></select></td><td><input data-pe="' + i + '" type="checkbox" style="width:auto"></td><td><input name="pdef" data-pd="' + i + '" type="radio" style="width:auto"></td></tr>';
+    $('planRows').innerHTML = pr;
+    $('capRows').innerHTML = CATS.map(function(c){ return '<tr><td><label style="flex-direction:row;align-items:center;gap:6px;color:inherit"><input data-cc="' + c[0] + '" type="checkbox" style="width:auto"> ' + c[1] + '</label></td><td>' + (c[2] ? ['pixel', '2d', '3d'].map(function(k){ return '<label style="display:inline-flex;flex-direction:row;gap:4px;margin-right:8px"><input data-ck="' + c[0] + '|' + k + '" type="checkbox" style="width:auto">' + ({pixel:'도트', '2d':'2D', '3d':'3D'})[k] + '</label>'; }).join('') : '해당 없음') + '</td><td><select data-cm="' + c[0] + '"><option value="ai">AI로 만들기</option><option value="free">무료 에셋 받기</option><option value="direct">직접 만들기</option></select></td><td><input data-cn="' + c[0] + '" maxlength="60"></td></tr>'; }).join('');
+  }
+  function q1(sel){ return document.querySelector(sel); }
+  $('tPick').addEventListener('change', async function(){
+    buildToolForm(); $('toolF').reset(); var id = $('tPick').value; $('tId').readOnly = !!id; if(!id) return;
+    var t = (await sb.from('tools').select('*').eq('id', id).single()).data, ps = (await sb.from('tool_plans').select('*').eq('tool_id', id).order('usd_month')).data || [], cs = (await sb.from('tool_caps').select('*').eq('tool_id', id)).data || [];
+    $('tId').value = t.id; $('tName').value = t.name; $('tAlias').value = t.alias || ''; $('tBill').value = t.billing || ''; $('tColor').value = /^#[0-9a-f]{6}$/i.test(t.color || '') ? t.color : '#88ccff'; $('tStatus').value = t.status || 'listed'; $('tGpu').value = t.gpu_min_gb || ''; $('tAi').checked = !!t.ai; $('tSite').value = t.site_url || ''; $('tPrice').value = t.pricing_url || ''; $('tTerms').value = t.terms_url || ''; $('tNote').value = t.terms_note || '';
+    ps.slice(0, 5).forEach(function(p, i){ q1('[data-pk="' + i + '"]').value = p.plan_key; q1('[data-pn="' + i + '"]').value = p.name; q1('[data-pm="' + i + '"]').value = +p.usd_month || ''; q1('[data-po="' + i + '"]').value = +p.usd_once || ''; q1('[data-pr="' + i + '"]').value = p.rights; q1('[data-pe="' + i + '"]').checked = !!p.price_estimated; q1('[data-pd="' + i + '"]').checked = !!p.is_default; });
+    cs.forEach(function(c){ q1('[data-cc="' + c.cat + '"]').checked = true; q1('[data-cm="' + c.cat + '"]').value = c.method; q1('[data-cn="' + c.cat + '"]').value = c.note || ''; (c.cls || []).forEach(function(k){ var e = q1('[data-ck="' + c.cat + '|' + k + '"]'); if(e) e.checked = true; }); });
+  });
+  $('toolF').addEventListener('submit', async function(e){
+    e.preventDefault(); say('');
+    var id = $('tId').value.trim();
+    var tool = {id:id, name:$('tName').value.trim(), alias:$('tAlias').value.trim() || null, billing:$('tBill').value.trim() || null, color:$('tColor').value, status:$('tStatus').value, gpu_min_gb:+$('tGpu').value || null, ai:$('tAi').checked, site_url:$('tSite').value.trim() || null, pricing_url:$('tPrice').value.trim() || null, terms_url:$('tTerms').value.trim() || null, terms_note:$('tNote').value.trim() || null, checked_on:today()};
+    var plans = []; for(var i = 0; i < 5; i++){ var k = q1('[data-pk="' + i + '"]').value.trim(); if(!k) continue; plans.push({tool_id:id, plan_key:k, name:q1('[data-pn="' + i + '"]').value.trim() || k, usd_month:+q1('[data-pm="' + i + '"]').value || 0, usd_once:+q1('[data-po="' + i + '"]').value || 0, rights:q1('[data-pr="' + i + '"]').value, price_estimated:q1('[data-pe="' + i + '"]').checked, is_default:q1('[data-pd="' + i + '"]').checked}); }
+    var caps = CATS.filter(function(c){ return q1('[data-cc="' + c[0] + '"]').checked; }).map(function(c){ var cls = ['pixel', '2d', '3d'].filter(function(k){ var e2 = q1('[data-ck="' + c[0] + '|' + k + '"]'); return e2 && e2.checked; }); return {tool_id:id, cat:c[0], cls:cls.length ? cls : null, method:q1('[data-cm="' + c[0] + '"]').value, note:q1('[data-cn="' + c[0] + '"]').value.trim() || null}; });
+    if(!plans.length) return say('요금제를 하나 이상 적어 주세요. 무료 도구면 키 free, 이름 무료로 적으면 돼요.', true);
+    if(!caps.length) return say('만들 수 있는 에셋을 하나 이상 골라 주세요. 없으면 견적에 나오지 않아요.', true);
+    var r = await sb.from('tools').upsert(tool); if(r.error) return say('저장하지 못했어요: ' + r.error.message, true);
+    r = await sb.from('tool_plans').delete().eq('tool_id', id); if(!r.error) r = await sb.from('tool_plans').insert(plans); if(r.error) return say('요금제를 저장하지 못했어요: ' + r.error.message, true);
+    r = await sb.from('tool_caps').delete().eq('tool_id', id); if(!r.error) r = await sb.from('tool_caps').insert(caps); if(r.error) return say('에셋 종류를 저장하지 못했어요: ' + r.error.message, true);
+    say('‘' + tool.name + '’을(를) 저장했어요. 사이트를 새로고침하면 견적과 커뮤니티에 나와요.'); loadTools();
+  });
+  /* ---------- 예시 올리기 ---------- */
+  async function loadExamples(){
+    var r = await sb.from('examples').select('id,tool_id,cat,slot,file_path').order('tool_id'); if(r.error) return;
+    $('exRows').innerHTML = r.data.map(function(x){ var u = sb.storage.from('examples').getPublicUrl(x.file_path).data.publicUrl + '?v=' + Date.now(); return '<tr><td>' + esc(x.tool_id) + '</td><td>' + esc(x.cat) + '</td><td>' + x.slot + '</td><td>' + (/\.(wav|mp3)$/i.test(x.file_path) ? '<audio controls preload="none" src="' + esc(u) + '"></audio>' : '<img src="' + esc(u) + '" alt="" style="height:56px;image-rendering:pixelated">') + '</td><td><button data-exdel="' + x.id + '|' + esc(x.file_path) + '">지우기</button></td></tr>'; }).join('') || '<tr><td colspan="5">아직 올린 예시가 없어요.</td></tr>';
+  }
+  async function showPrompt(){ var r = await sb.from('base_prompts').select('prompt,note').eq('cat', $('eCat').value).maybeSingle(); $('ePrompt').textContent = r.data ? '기준 프롬프트: ' + r.data.prompt + (r.data.note ? ' · ' + r.data.note : '') : ''; }
+  $('eCat').addEventListener('change', showPrompt); showPrompt();
+  $('exF').addEventListener('submit', async function(e){
+    e.preventDefault(); say('');
+    var f = $('eFile').files[0]; if(!f) return; if(f.size > 10 * 1024 * 1024) return say('10MB 이하 파일만 올릴 수 있어요.', true);
+    var ext = (f.name.split('.').pop() || 'png').toLowerCase().replace(/[^a-z0-9]/g, ''), tool = $('eTool').value, cat = $('eCat').value, slot = +$('eSlot').value, path = tool + '/' + cat + '-' + slot + '.' + ext;
+    var old = (await sb.from('examples').select('id,file_path').eq('tool_id', tool).eq('cat', cat).eq('slot', slot).maybeSingle()).data;
+    if(old && old.file_path !== path) await sb.storage.from('examples').remove([old.file_path]);
+    var up = await sb.storage.from('examples').upload(path, f, {upsert:true, contentType:f.type || undefined}); if(up.error) return say('파일을 올리지 못했어요: ' + up.error.message, true);
+    var r = old ? await sb.from('examples').update({file_path:path, made_on:today()}).eq('id', old.id) : await sb.from('examples').insert({tool_id:tool, cat:cat, slot:slot, file_path:path});
+    if(r.error) return say('기록하지 못했어요: ' + r.error.message, true);
+    say('올렸어요. 견적 비교표의 ' + tool + ' · ' + cat + ' ' + slot + '번 칸에 떠요.'); $('eFile').value = ''; loadExamples();
   });
   boot();
 })();

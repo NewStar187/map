@@ -114,3 +114,20 @@ test('기준 데이터는 운영자만 고친다', async () => {
   await as(alice, `insert into notices(tool_id, severity, title, body) values ('suno', 'risk', '약관이 바뀌었어요', '내려받은 곡만 상업적으로 쓸 수 있어요')`);
   assert.equal((await as(null, `select title from notices`)).rows.length, 1);
 });
+
+test('도구가 맡는 에셋(tool_caps)은 누구나 읽고 운영자만 고친다', async () => {
+  await assert.rejects(as(bob, `insert into tool_caps(tool_id, cat, method) values ('suno', 'bgm', 'ai')`));
+  await as(alice, `insert into tools(id, name, ai, status) values ('newtool', 'NewTool', true, 'listed')`);
+  await as(alice, `insert into tool_caps(tool_id, cat, cls, method) values ('newtool', 'illus', '{2d}', 'ai')`);
+  const r = await as(null, `select t.status, c.cls from tools t join tool_caps c on c.tool_id = t.id where t.id = 'newtool'`);
+  assert.equal(r.rows[0].status, 'listed'); assert.deepEqual(r.rows[0].cls, ['2d']);
+  await assert.rejects(as(alice, `insert into tools(id, name, status) values ('bad', 'Bad', 'whatever')`));
+});
+
+test('추가 도구 SQL은 오류 없이 들어가고, 두 번 실행해도 같다', async () => {
+  const sql = readFileSync(new URL('../supabase/migrations-004-extra-tools.sql', import.meta.url), 'utf8');
+  await db.exec('reset role;'); await db.exec(sql); await db.exec(sql);
+  const r = await db.query(`select (select count(*) from tools where status = 'listed' and id <> 'newtool') as tools, (select count(*) from tool_caps where tool_id <> 'newtool') as caps, (select count(*) from tool_plans p join tools t on t.id = p.tool_id where t.status = 'listed' and p.is_default) as defaults`);
+  assert.equal(Number(r.rows[0].tools), 21); assert.equal(Number(r.rows[0].defaults), 21);
+  assert.ok(Number(r.rows[0].caps) >= 40);
+});

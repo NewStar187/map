@@ -4,12 +4,15 @@
   var ME = '11111111-1111-4111-8111-111111111111', OTHER = '22222222-2222-4222-8222-222222222222', W1 = '33333333-3333-4333-8333-333333333333';
   var db = window.__mockdb = {
     profiles: [{ id: ME, nickname: '테스트유저', tokens: 30, is_admin: false }, { id: OTHER, nickname: '도트장인', tokens: 30, is_admin: false }],
-    tool_plans: [{ tool_id: 'pixellab', plan_key: 'apprentice', usd_month: 12, usd_once: 0, rights: 'ok' }],
+    tool_plans: [{ tool_id: 'pixellab', plan_key: 'apprentice', usd_month: 12, usd_once: 0, rights: 'ok' }, { tool_id: 'newgen', plan_key: 'free', name: '무료', usd_month: 0, usd_once: 0, rights: 'none' }, { tool_id: 'newgen', plan_key: 'pro', name: 'Pro', usd_month: 9, usd_once: 0, rights: 'ok', is_default: true }],
+    tools: [{ id: 'pixellab', name: 'PixelLab', ai: true, status: 'verified' }, { id: 'newgen', name: 'NewGen', ai: true, status: 'listed', billing: '구독', color: '#88ccff', alias: '뉴젠', terms_note: '유료 플랜에서 만든 그림은 상업적으로 쓸 수 있어요.', checked_on: '2026-11-10' }],
+    tool_caps: [{ tool_id: 'newgen', cat: 'illus', cls: null, method: 'ai', note: '' }, { tool_id: 'newgen', cat: 'ui', cls: ['2d'], method: 'ai', note: '' }],
     tool_stats: [], examples: [], games: [], work_votes: [], comments: [], tool_reviews: [], unlocks: [], reports: [],
     works: [{ id: W1, user_id: OTHER, tool_id: 'pixellab', cat: 'obj', cls: 'pixel', engine: 'Godot', title: '서버에서 온 기사 스프라이트', file_path: OTHER + '/w1.png', star: 4.5, sat: 'over', how: 'as', tries: 2, status: 'visible', created_at: new Date(Date.now() - 2 * 864e5).toISOString() }],
     work_details: [{ work_id: W1, prompt: 'server knight prompt', cost_krw: 1200, note: '서버 작성자의 말' }],
     uploads: [], calls: []
   };
+  if (window.__mockAdmin) db.profiles[0].is_admin = true;
   var session = null, listeners = [];
   function rows(t) { return db[t] || (db[t] = []); }
   function counts() { return db.works.filter(function (w) { return w.status === 'visible'; }).map(function (w) { var v = db.work_votes.filter(function (x) { return x.work_id === w.id; }); return { work_id: w.id, helpful: v.filter(function (x) { return x.helpful; }).length, same: v.filter(function (x) { return x.verdict === 'same'; }).length, diff: v.filter(function (x) { return x.verdict === 'diff'; }).length, comments: db.comments.filter(function (c) { return c.work_id === w.id; }).length }; }); }
@@ -42,7 +45,10 @@
       var all = rows(t);
       if (self.op === 'insert' || self.op === 'upsert') {
         if (!uid() && t !== 'reports') return { data: null, error: { message: 'not authenticated' } };
+        if (Array.isArray(self.val)) { self.val.forEach(function (x) { all.push(Object.assign({}, x)); }); return { data: null, error: null }; }
         var o = Object.assign({}, self.val);
+        if (t === 'notices') o.created_at = new Date().toISOString();
+        if (t === 'examples') o.id = all.length + 1;
         if (t === 'works') { o.status = 'pending'; o.created_at = new Date().toISOString(); var p = db.profiles.filter(function (x) { return x.id === uid(); })[0]; p.tokens += 10; }
         if (t === 'comments') { o.id = db.comments.length + 100; o.created_at = new Date().toISOString(); }
         if (t === 'tool_reviews') { var had = all.some(function (x) { return x.tool_id === o.tool_id && x.user_id === o.user_id; }); if (!had) db.profiles.filter(function (x) { return x.id === uid(); })[0].tokens += 5; }
@@ -83,6 +89,7 @@
         },
         storage: { from: function (b) { return {
           upload: function (p, f) { db.uploads.push({ bucket: b, path: p, name: f && f.name }); return Promise.resolve({ data: { path: p }, error: null }); },
+          remove: function (ps) { db.calls.push('remove:' + ps.join(',')); return Promise.resolve({ data: [], error: null }); },
           getPublicUrl: function (p) { return { data: { publicUrl: 'data:image/gif;base64,R0lGODlhAQABAAAAACw=' + '#' + b + '/' + p } }; }
         }; } }
       };

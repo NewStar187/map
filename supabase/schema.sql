@@ -38,7 +38,20 @@ create table public.tools (
   terms_url       text,
   terms_note      text,                                  -- 상업적 이용 조건을 한두 문장으로
   checked_on      date,                                  -- 운영자가 가격과 약관을 마지막으로 확인한 날
+  status          text not null default 'listed' check (status in ('verified', 'listed')),  -- 검증됨(자동 추천) / 목록만(선택지로만)
+  alias           text,                                  -- 도우미가 알아들을 다른 이름
+  gpu_min_gb      integer,                               -- 내 PC에서 돌리는 도구의 최소 그래픽카드 메모리
   active          boolean not null default true
+);
+
+-- 어느 도구가 어떤 에셋을 어떤 그림체로 어떻게 만드는가(운영 화면에서 추가한 도구용)
+create table public.tool_caps (
+  tool_id  text not null references public.tools(id) on delete cascade,
+  cat      text not null check (cat in ('obj', 'scene', 'ui', 'illus', 'sfx', 'bgm', 'code', 'text')),
+  cls      text[],
+  method   text not null default 'ai' check (method in ('ai', 'free', 'direct')),
+  note     text,
+  primary key (tool_id, cat)
 );
 
 create table public.tool_plans (
@@ -305,6 +318,7 @@ alter table public.profiles      enable row level security;
 alter table public.token_ledger  enable row level security;
 alter table public.tools         enable row level security;
 alter table public.tool_plans    enable row level security;
+alter table public.tool_caps     enable row level security;
 alter table public.base_prompts  enable row level security;
 alter table public.examples      enable row level security;
 alter table public.notices       enable row level security;
@@ -332,6 +346,8 @@ create policy tools_read on public.tools for select using (true);
 create policy tools_admin on public.tools for all using (public.is_admin()) with check (public.is_admin());
 create policy plans_read on public.tool_plans for select using (true);
 create policy plans_admin on public.tool_plans for all using (public.is_admin()) with check (public.is_admin());
+create policy caps_read on public.tool_caps for select using (true);
+create policy caps_admin on public.tool_caps for all using (public.is_admin()) with check (public.is_admin());
 create policy prompts_read on public.base_prompts for select using (true);
 create policy prompts_admin on public.base_prompts for all using (public.is_admin()) with check (public.is_admin());
 create policy examples_read on public.examples for select using (true);
