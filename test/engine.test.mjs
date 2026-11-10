@@ -76,7 +76,10 @@ test('이미 쓰는 도구는 추가 비용이 0원이다', () => {
   const owned = quotes((st) => { st.budget = 30000; st.have = st.have.concat(['pixellab']); st.havePlan = Object.assign({}, st.havePlan, { pixellab: 'apprentice' }); });
   const usesPixel = Object.values(owned.out.one.picks).includes('pixellab');
   if (usesPixel) assert.ok(!owned.out.one.c.used.pixellab, 'PixelLab을 쓰는 중인데 구독료가 잡힘');
-  assert.ok(owned.out.one.c.monthly <= base.out.one.c.monthly);
+  // 가진 도구는 공짜로 치므로 Lite도 쓸 수 있고, 그래도 Lite는 0원이다
+  assert.equal(owned.out.free.c.monthly, 0);
+  assert.ok(Object.values(owned.out.free.picks).includes('pixellab'), 'PixelLab을 쓰는 중인데 Lite가 활용하지 않음');
+  for (const s of e.STRATS) assert.ok(!owned.out[s].c.used.pixellab, s + ': 쓰는 중인 PixelLab에 구독료가 잡힘');
 });
 
 test('모든 장르와 그림체에서 오류 없이 견적이 나온다', () => {

@@ -17,7 +17,7 @@ function renderSidebar(){
     + '<button type="button" class="navbtn" data-go="tools"'+(S.view === 'tools' || S.view === 'tool' ? ' aria-current="page"' : '')+'>'+icon('doc', 16)+'커뮤니티<span class="cnt tokc"><span class="sr">토큰 </span>'+icon('coin', 12)+(S.tokens || 0)+'</span></button></nav>'
     + '<section aria-labelledby="sbQ"><div class="sb-h"><span id="sbQ">게임</span><button type="button" class="plus" data-go="setup" aria-label="새 게임 견적 받기"'+(S.view === 'setup' ? ' aria-current="page"' : '')+'>'+ui('plus', 16)+'</button></div><ul class="qlist">'+qs+'</ul></section>'
     + '<section aria-labelledby="sbT"><div class="sb-h"><span id="sbT">쓰는 도구</span><button type="button" class="link sm" data-act="tools">관리</button></div><ul class="tlist">'+(tools || '<li class="qempty">아직 고른 도구가 없어요.</li>')+'</ul></section>'
-    + '<div class="sb-foot"><p class="draft">디자인 시안이에요. 후기, 결과물, 작업 기록은 예시예요. <button type="button" class="link sm" data-act="reset-demo">예시 데이터로 되돌리기</button></p></div>';
+    + '<div class="sb-foot"></div>';
 }
 function placeGuide(){}
 
@@ -54,7 +54,7 @@ function renderHome(){
       + '<li><b class="t-muted">이메일</b><span>게임을 저장할 때 게임마다 켤 수 있어요. 처음에는 꺼져 있어요.</span></li></ul>' : '')
     + (fresh.length || (S.showSeen && past.length) ? '<ul class="alist">' + fresh.concat(S.showSeen ? past : []).map(alertRow).join('') + '</ul>' : '<p class="note">지금 할 일이 있는 소식은 없어요.</p>')
     + (past.length ? '<button type="button" class="link" data-act="showseen">'+(S.showSeen ? '끝난 소식 숨기기' : '끝난 소식 '+past.length+'개 보기')+'</button>' : '')
-    + '<details class="quiet"'+(S.quietOpen ? ' open' : '')+'><summary>살펴봤지만 알리지 않은 변화 '+QUIET.length+'건</summary><ul>' + QUIET.map(function(x){ return '<li><b>'+x.title+'</b><small>'+x.date+'</small><span>'+x.why+'</span></li>'; }).join('') + '</ul></details>'
+    + (QUIET.length ? '' : '<!--') + '<details class="quiet"'+(S.quietOpen ? ' open' : '')+'><summary>살펴봤지만 알리지 않은 변화 '+QUIET.length+'건</summary><ul>' + QUIET.map(function(x){ return '<li><b>'+x.title+'</b><small>'+x.date+'</small><span>'+x.why+'</span></li>'; }).join('') + '</ul></details>' + (QUIET.length ? '' : '-->')
     + '</section>';
   $('view').innerHTML = mg
     + '<div class="ph"><div><h1>내 게임</h1><p class="lead">게임마다 견적, 작업 기록, 스토어 AI 고지문을 한곳에서 챙겨요.</p></div><button type="button" class="btn lg" data-go="setup">'+ui('plus', 18)+'새 게임 견적 받기</button></div>'

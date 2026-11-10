@@ -12,7 +12,10 @@ function persist(){ clearTimeout(saveT); saveT = setTimeout(function(){ try { va
 function fillState(){
   var D = {works:clone(WORKS), toolRev:clone(TOOL_REV), voted:{}, toolT:null, toolCat:'', toolCls:'', toolCatF:'', wsort:'top', prio:'tools', intake:[], liked:{}, reported:{}, seen:{}, alertDone:{}, myTools:clone(INITIAL_TOOLS), toolCache:{}, assetOpen:'obj', tokens:30, unlocked:{}};
   Object.keys(D).forEach(function(k){ if(S[k] == null) S[k] = D[k]; });
-  (S.quotes || []).forEach(function(q){ if(!q.cloudId && (q.id === 'q1' || q.id === 'q2') && /별빛 플랫포머|퍼즐 프로토타입/.test(q.name)) q.ex = true; });
+  /* 예전 버전이 브라우저에 남긴 예시 게임과 예시 도구는 지운다 */
+  S.quotes = (S.quotes || []).filter(function(q){ return !q.ex && !(!q.cloudId && (q.id === 'q1' || q.id === 'q2') && /별빛 플랫포머|퍼즐 프로토타입/.test(q.name)); });
+  if(!S.cleanedDemo){ S.myTools = []; S.alertDone = {}; S.cleanedDemo = true; }
+  if(S.activeQ && !S.quotes.some(function(q){ return q.id === S.activeQ; })){ S.activeQ = null; if(S.view === 'quote') S.view = 'home'; }
   if(!Array.isArray(S.works) || !S.works.length) S.works = clone(WORKS);
   if(!S.toolRev || typeof S.toolRev !== 'object') S.toolRev = clone(TOOL_REV);
   function fix(st){ if(!st) return; st.inv = st.inv || invFromGenres(st.genres && st.genres.length ? st.genres : ['platformer']); st.inv.custom = st.inv.custom || []; st.inv.feat = st.inv.feat || {}; st.genres = st.genres && st.genres.length ? st.genres : ['platformer']; syncSt(st); }

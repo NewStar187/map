@@ -5,7 +5,7 @@ const { chromium } = require('playwright'); const path = require('path');
   const errs = []; p.on('pageerror', (e) => errs.push(e.message)); p.on('console', (m) => { if (/\[MAP\]/.test(m.text())) errs.push('console: ' + m.text()); });
   p.on('response', (res) => { if (res.status() >= 400 && !/rpc\/unlock|notices/.test(res.url())) errs.push('HTTP ' + res.status() + ' ' + res.url().slice(0, 120)); });
   let fail = 0; const ok = (c, m) => { console.log((c ? 'ok  ' : 'FAIL') + ' ' + m); if (!c) fail++; };
-  await p.goto('file://' + path.resolve(__dirname, '../dist/index.cloud.test.html')); await p.waitForTimeout(3000);
+  await p.goto((process.env.LIVE_URL || 'file://' + path.resolve(__dirname, '../dist/index.cloud.test.html'))); await p.waitForTimeout(3000);
   ok(await p.evaluate(() => !!window.supabase), 'Supabase 라이브러리를 불러옴');
   ok(await p.$('.acct') !== null, '사이드바에 로그인 상자가 보임: ' + (await p.$eval('.acct', (e) => e.innerText.replace(/\s+/g, ' ')).catch(() => '-')));
   const r = await p.evaluate(async () => { const c = window.supabase.createClient(window.MAP_CONFIG.supabaseUrl, window.MAP_CONFIG.supabaseAnonKey);

@@ -1,6 +1,6 @@
 /* ============================== 상태 ============================== */
 /* 예시 사용자: 유니티 2D 도트 게임을 혼자 만들고, 코드는 Claude 유료 구독으로 짜고, 그림 도구는 아직 없다 */
-var INITIAL_TOOLS = [{t:'claude', plan:'pro'}];
+var INITIAL_TOOLS = []; /* 처음에는 쓰는 도구가 없다. 사이드바의 '관리'에서 고른다 */
 function myToolIds(){ return S.myTools.map(function(x){ return x.t; }); }
 var objSeq = 0;
 function objFrom(list){ return list.map(function(o){ objSeq++; return {id:'o' + objSeq, name:o[0], n:o[1], a:o[2]}; }); }
@@ -42,7 +42,7 @@ var S = null;
 function initialState(){
   S = {
     view:'home', sbOpen:false, chatOpen:false, pendingAct:null, liked:{}, reported:{},
-    myTools:clone(INITIAL_TOOLS), toolCache:{},
+    myTools:clone(INITIAL_TOOLS), toolCache:{}, cleanedDemo:true,
     quotes:[], activeQ:null, qStep:1, newQ:null, guide:false,
     setup:null, wiz:1, draft:null, editingQ:null, condMode:false, moreOpen:false, intake:[],
     prio:'tools', hourVal:MIN_WAGE, detailOpen:false,
@@ -74,7 +74,7 @@ function initialState(){
     if(TOOLS[t].ai) e.how = r.cat === 'code' ? 'as' : 'human'; else if(TOOLS[t].pack) e.how = 'pack'; else e.how = 'self';
     if(t === 'pixellab') e.paid = true; if(t === 'cc0music') e.mark = 'noai'; qb.logs.push(e); });
   S.quotes.push(qb);
-  S.quotes.forEach(function(q){ q.ex = true; }); /* 예시 게임: 서버에 올리지 않는다 */
+  S.quotes = []; /* 예시 게임은 보여 주지 않는다(시연용 코드는 남겨 둔다) */
 }
 /* 저장한 게임: 견적과 함께 만드는 동안의 작업 기록(logs)과 공개 문구 상태(disc)를 둔다 */
 function newQuoteRecord(id, name, st, n, saved, qty, buy, picks, remind){

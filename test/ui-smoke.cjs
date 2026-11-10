@@ -50,9 +50,9 @@ await step('comment',async()=>{await p.fill('#cIn','좋은 팁 고마워요');aw
 await step('rev unlock',async()=>{const u=await p.$('[data-unlockrev]');if(u){await u.click();log('   ',await p.innerText('#toast'))}});
 await step('tool review',async()=>{await p.click('[data-trev]');await p.click('[data-trstar="5"]');await p.fill('#trText','좋아요');await p.click('#trF button[type=submit]');log('   star',await p.innerText('.tp-star .big'))});
 await step('upload',async()=>{await p.click('.ph [data-uploadfor]');await p.click('[data-act=pick-file]');await p.fill('#upTitle','테스트 결과물 올리기');await p.click('[data-upstar="4"]');await p.click('[data-upsat=meet]');await p.click('[data-uphow=aiedit]');await p.check('#upOwn');await shot('upload');await p.click('#upF button[type=submit]');await p.waitForTimeout(200);log('   toast',await p.innerText('#toast'))});
-await step('game log',async()=>{await p.evaluate(()=>__t.go('quote',{q:'q1',step:2}));await p.click('.lrow [data-logadd]');await shot('logform');await p.click('[data-lfhow=aiedit]');await p.click('#logF button[type=submit]');log('   toast',await p.innerText('#toast'))});
-await step('game disc',async()=>{await p.evaluate(()=>__t.go('quote',{q:'q2',step:3}));await p.click('[data-dlive=no]');log('   en',(await p.innerText('.copybox')).replace(/\n/g,' / '))});
-await step('game quote',async()=>{await p.evaluate(()=>__t.go('quote',{q:'q1',step:1}));await shot('game-quote',true)});
+await step('game log',async()=>{await p.evaluate(()=>__t.go('quote',{q:__t.S.quotes[0].id,step:2}));await p.click('.lrow [data-logadd]');await shot('logform');{const h=await p.$('[data-lfhow=aiedit]');if(h)await h.click();}await p.click('#logF button[type=submit]');log('   toast',await p.innerText('#toast'))});
+await step('game disc',async()=>{await p.evaluate(()=>__t.go('quote',{q:__t.S.quotes[0].id,step:3}));await p.click('[data-dlive=no]');const t=await p.innerText('#view');if(!t.includes('스토어 AI 고지문'))throw new Error('고지문 화면 아님');log('   disc',(await p.$('.copybox'))?'문구 있음':'먼저 정할 게 있음')});
+await step('game quote',async()=>{await p.evaluate(()=>__t.go('quote',{q:__t.S.quotes[0].id,step:1}));await shot('game-quote',true)});
 await step('edit quote',async()=>{await p.click('[data-act=edit-quote]');await p.waitForTimeout(300);log('   sel',await p.evaluate(()=>__t.S.draft.sel));await shot('edit')});
 log('ERRORS',errs.length);errs.slice(0,15).forEach(e=>log(' ',e));
 await b.close();})();

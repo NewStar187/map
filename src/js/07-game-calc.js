@@ -171,7 +171,8 @@ function activeAlerts(){
 }
 function alertFor(a, qid){ return a.items ? a.items.some(function(i){ return i.q === qid; }) : a.q === qid; }
 /* 살펴봤지만 알리지 않은 변화: 왜 알리지 않았는지 함께 남겨 알림이 조용한 이유를 보여 준다 */
-var QUIET = [
+var QUIET = []; /* 운영자가 실제로 살펴본 변화만 넣는다. 아래는 시안의 예시 */
+var QUIET_DEMO = [
   {date:'10월 30일', title:'PixelLab 이용약관 개정', why:'개정본을 읽어 봤어요. 요금제를 나누지 않고 상업적 이용을 허락하고 저작권이 사용자에게 있다는 조건이 그대로라서 알리지 않았어요.'},
   {date:'10월', title:'Claude 요금제 이름 변경', why:'Max 20x가 Ultra로 이름이 바뀌었고 월 200달러인 가격은 같아요. 견적 숫자에 영향이 없어서 알리지 않았어요.'},
   {date:'매일', title:'환율 변동', why:'환율이 움직여도 소식으로 보내지 않아요. 견적에는 기준 환율인 ' + FX_NOTE + '을 적고, 환율이 10% 오르면 예산을 넘는 견적은 따로 표시해요.'}

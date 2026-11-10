@@ -249,6 +249,7 @@ renderSidebar = function(){
   renderSidebar0();
   if(!cloudOn()) return;
   var sb = $('sb'), old = sb.querySelector('.acct'); if(old) old.remove();
+  if(!signedIn()){ var tk = sb.querySelector('.tokc'); if(tk) tk.remove(); } /* 로그인 전에는 토큰이 없다 */
   var box = document.createElement('div'); box.className = 'acct';
   box.innerHTML = signedIn()
     ? '<span class="ac-me"><b>'+esc(CLOUD.profile ? CLOUD.profile.nickname : '로그인함')+'</b><small>토큰 '+(S.tokens || 0)+'개'+(CLOUD.profile && CLOUD.profile.is_admin ? ' · <a href="admin" target="_blank" rel="noopener">운영 화면</a>' : '')+'</small></span><button type="button" class="btn sm sec" data-act="sign-out">로그아웃</button>'
